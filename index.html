@@ -571,7 +571,17 @@
     <label>Okul Numarası Son Hanesi</label>
     <input type="number" id="last-digit" min="0" max="9" placeholder="?" maxlength="1"
            oninput="if(this.value.length>1)this.value=this.value.slice(-1); updateDigit()"/>
-    <div id="digit-display">Hane: <strong id="digit-val">—</strong></div>
+    <div id="digit-display" style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;">
+      <span style="font-size:11px;color:#64748b;">Hane: <strong id="digit-val">—</strong></span>
+      <span id="cift-tek-badge" style="display:none;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;"></span>
+    </div>
+    <div style="margin-top:10px;">
+      <div style="font-size:10px;color:#64748b;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:5px;">Hoca modu</div>
+      <div style="display:flex;gap:0;border-radius:6px;overflow:hidden;border:1px solid #3d4166;">
+        <button class="mod-btn aktif" id="mod-her-hane" onclick="modDegistir('her')" style="flex:1;font-size:11px;padding:6px 4px;">Her Hane</button>
+        <button class="mod-btn" id="mod-cift-tek"  onclick="modDegistir('cift-tek')" style="flex:1;font-size:11px;padding:6px 4px;">Çift / Tek</button>
+      </div>
+    </div>
   </div>
 
   <nav>
@@ -801,12 +811,27 @@
       <div class="card">
         <div class="card-title">Soru 3</div>
         <h2>Fenerbahçe Şampiyonluk Simülasyonu</h2>
-        <p>Fenerbahçe 12 yıldır şampiyon olamamaktadır. Önümüzdeki yıl şampiyon olma olasılığı <strong>%30</strong>'dur. Şampiyon olamadığı her yıl bu olasılık <strong>%2</strong> daha azalmaktadır. Kaç yıl sonra şampiyon olabileceğini simüle eden Python programı yazınız.</p>
+        <p>Fenerbahçe <span id="s3-yil" style="color:#a78bfa;font-weight:700;">12</span> yıldır şampiyon olamamaktadır. Önümüzdeki yıl şampiyon olma olasılığı <strong id="s3-olas" style="color:#a78bfa;">%30</strong>'dur. Şampiyon olamadığı her yıl bu olasılık <strong id="s3-azalma" style="color:#a78bfa;">%2</strong> daha azalmaktadır. Kaç yıl sonra şampiyon olabileceğini simüle eden Python programı yazınız.</p>
+      </div>
+
+      <!-- Senin Değerlerin Kartı -->
+      <div class="card" style="border-color:#7c3aed;background:#1e1b4b;">
+        <div class="card-title" style="color:#c4b5fd;">🎯 Senin Son Hanenine Göre Değerler</div>
+        <div id="s3-deger-uyari" style="color:#64748b;font-size:13px;">Sol menüden okul numaranın son hanesini gir.</div>
+        <table id="s3-deger-tablo" style="display:none;">
+          <thead><tr><th>Parametre</th><th>Senin Değerin</th></tr></thead>
+          <tbody>
+            <tr><td>Şampiyonsuzluk süresi</td><td><strong id="s3t-yil" style="color:#a78bfa;"></strong> yıl</td></tr>
+            <tr><td>Başlangıç olasılığı</td><td><strong id="s3t-olas" style="color:#a78bfa;"></strong></td></tr>
+            <tr><td>Her yıl azalma miktarı</td><td><strong id="s3t-azalma" style="color:#ef4444;"></strong></td></tr>
+            <tr><td>Teorik maksimum süre</td><td><strong id="s3t-maks" style="color:#f59e0b;"></strong> yıl</td></tr>
+          </tbody>
+        </table>
       </div>
 
       <div class="card">
-        <div class="card-title">Python Kodu</div>
-        <pre><span class="kw">import</span> random
+        <div class="card-title">Python Kodu — Senin Değerlerinle</div>
+        <pre id="s3-kod"><span class="kw">import</span> random
 
 <span class="kw">def</span> <span class="fn">fenerbahce_simulasyon</span>():
     olasilik = <span class="nm">0.30</span>   <span class="cm"># başlangıç olasılığı %30</span>
@@ -814,14 +839,14 @@
 
     <span class="kw">while</span> olasilik > <span class="nm">0</span>:
         yil += <span class="nm">1</span>
-        rassal = random.<span class="fn">random</span>()   <span class="cm"># 0 ile 1 arasında rastgele sayı</span>
+        rassal = random.<span class="fn">random</span>()
 
         <span class="kw">if</span> rassal < olasilik:
             <span class="fn">print</span>(<span class="st">f"{yil}. yıl: ŞAMPİYON! (Olasılık: %{olasilik*100:.0f})"</span>)
             <span class="kw">return</span> yil
         <span class="kw">else</span>:
             <span class="fn">print</span>(<span class="st">f"{yil}. yıl: Şampiyon olamadı. (Olasılık: %{olasilik*100:.0f})"</span>)
-            olasilik -= <span class="nm">0.02</span>   <span class="cm"># başarısız her yılda %2 azalır</span>
+            olasilik -= <span class="nm">0.02</span>   <span class="cm"># her başarısız yılda azalır</span>
 
     <span class="fn">print</span>(<span class="st">"Fenerbahçe hiç şampiyon olamadı."</span>)
     <span class="kw">return</span> <span class="kw">None</span>
@@ -834,10 +859,10 @@
         <table>
           <thead><tr><th>Satır</th><th>Açıklama</th></tr></thead>
           <tbody>
-            <tr><td><code>olasilik = 0.30</code></td><td>Başlangıç olasılığı %30</td></tr>
+            <tr><td><code>olasilik = ...</code></td><td>Başlangıç olasılığı — son haneye göre değişir</td></tr>
             <tr><td><code>random.random()</code></td><td>0–1 arası rastgele sayı üretir</td></tr>
             <tr><td><code>rassal &lt; olasilik</code></td><td>Rastgele sayı olasılıktan küçükse şampiyon</td></tr>
-            <tr><td><code>olasilik -= 0.02</code></td><td>Her başarısız yılda olasılık %2 düşer</td></tr>
+            <tr><td><code>olasilik -= ...</code></td><td>Her başarısız yılda olasılık düşer</td></tr>
             <tr><td><code>while olasilik &gt; 0</code></td><td>Olasılık sıfırın altına düşünce döngü biter</td></tr>
           </tbody>
         </table>
@@ -851,15 +876,31 @@
     <div class="page" id="page-s4">
       <div class="card">
         <div class="card-title">Soru 4</div>
-        <h2>Çift Zar Simülasyonu</h2>
-        <p>İki zar aynı anda atılmaktadır. Kaçıncı denemede <strong>her iki zarın da 6</strong> geldiğini simüle eden Python programı yazınız.</p>
+        <h2 id="s4-baslik">Çift Zar Simülasyonu</h2>
+        <p id="s4-aciklama">İki zar aynı anda atılmaktadır. Kaçıncı denemede <strong>her iki zarın da 6</strong> geldiğini simüle eden Python programı yazınız.</p>
+      </div>
+
+      <!-- Senin Değerlerin Kartı -->
+      <div class="card" style="border-color:#7c3aed;background:#1e1b4b;">
+        <div class="card-title" style="color:#c4b5fd;">🎯 Senin Son Hanenine Göre Değerler</div>
+        <div id="s4-deger-uyari" style="color:#64748b;font-size:13px;">Sol menüden okul numaranın son hanesini gir.</div>
+        <table id="s4-deger-tablo" style="display:none;">
+          <thead><tr><th>Parametre</th><th>Senin Değerin</th></tr></thead>
+          <tbody>
+            <tr><td>Zar 1 hedef</td><td><strong id="s4t-z1" style="color:#a78bfa;"></strong></td></tr>
+            <tr><td>Zar 2 hedef</td><td><strong id="s4t-z2" style="color:#a78bfa;"></strong></td></tr>
+            <tr><td>Başarı koşulu</td><td><strong id="s4t-kosul" style="color:#22c55e;"></strong></td></tr>
+            <tr><td>Teorik olasılık</td><td><strong id="s4t-olas" style="color:#f59e0b;"></strong></td></tr>
+            <tr><td>Beklenen deneme</td><td><strong id="s4t-beklenti" style="color:#f59e0b;"></strong></td></tr>
+          </tbody>
+        </table>
       </div>
 
       <div class="card">
-        <div class="card-title">Python Kodu</div>
-        <pre><span class="kw">import</span> random
+        <div class="card-title">Python Kodu — Senin Değerlerinle</div>
+        <pre id="s4-kod"><span class="kw">import</span> random
 
-<span class="kw">def</span> <span class="fn">cift_alti_simulasyon</span>():
+<span class="kw">def</span> <span class="fn">zar_simulasyon</span>():
     deneme = <span class="nm">0</span>
 
     <span class="kw">while</span> <span class="kw">True</span>:
@@ -870,10 +911,10 @@
         <span class="fn">print</span>(<span class="st">f"Deneme {deneme}: Zar1={zar1}, Zar2={zar2}"</span>)
 
         <span class="kw">if</span> zar1 == <span class="nm">6</span> <span class="kw">and</span> zar2 == <span class="nm">6</span>:
-            <span class="fn">print</span>(<span class="st">f"\n>>> {deneme}. denemede çift 6 geldi!"</span>)
+            <span class="fn">print</span>(<span class="st">f"\n>>> {deneme}. denemede hedef geldi!"</span>)
             <span class="kw">return</span> deneme
 
-<span class="fn">cift_alti_simulasyon</span>()</pre>
+<span class="fn">zar_simulasyon</span>()</pre>
       </div>
 
       <div class="card">
@@ -881,14 +922,14 @@
         <table>
           <thead><tr><th>Satır</th><th>Açıklama</th></tr></thead>
           <tbody>
-            <tr><td><code>random.randint(1, 6)</code></td><td>1 ile 6 arasında rastgele tam sayı</td></tr>
-            <tr><td><code>while True</code></td><td>Çift 6 gelene kadar döngü sürer</td></tr>
-            <tr><td><code>zar1 == 6 and zar2 == 6</code></td><td>Her iki zar da 6 ise koşul sağlanır</td></tr>
+            <tr><td><code>random.randint(1, 6)</code></td><td>1 ile 6 arasında rastgele tam sayı (zar atışı)</td></tr>
+            <tr><td><code>while True</code></td><td>Hedef değer gelene kadar döngü sürer</td></tr>
+            <tr><td><code>zar1 == X and zar2 == Y</code></td><td>Her iki zar hedef değere eşitse koşul sağlanır</td></tr>
             <tr><td><code>deneme</code> sayacı</td><td>Kaçıncı denemede başarı geldiğini tutar</td></tr>
           </tbody>
         </table>
-        <div class="highlight yellow">
-          Teorik beklenti: P = 1/6 × 1/6 = 1/36 ≈ %2,78 → Ortalama 36. denemede çift 6 beklenir.
+        <div class="highlight yellow" id="s4-teori">
+          Teorik beklenti: P = 1/6 × 1/6 = 1/36 ≈ %2,78 → Ortalama 36. denemede hedef beklenir.
         </div>
       </div>
     </div>
@@ -1763,6 +1804,176 @@
   }
 
   // ══════════════════════════════════════════════
+  // MOD: her hane farklı / çift-tek
+  // ══════════════════════════════════════════════
+  let aktifMod = 'her'; // 'her' veya 'cift-tek'
+
+  function modDegistir(mod) {
+    aktifMod = mod;
+    document.getElementById('mod-her-hane').className = 'mod-btn' + (mod==='her'?' aktif':'');
+    document.getElementById('mod-cift-tek').className  = 'mod-btn' + (mod==='cift-tek'?' aktif':'');
+    updateDigit();
+  }
+
+  function aktifVeri3() {
+    const d = getDigit();
+    if (aktifMod === 'cift-tek') return d % 2 === 0 ? S3_CIFT : S3_TEK;
+    return S3_DATA[d];
+  }
+  function aktifVeri4() {
+    const d = getDigit();
+    if (aktifMod === 'cift-tek') return d % 2 === 0 ? S4_CIFT : S4_TEK;
+    return S4_DATA[d];
+  }
+  function aktifVeri5() {
+    const d = getDigit();
+    if (aktifMod === 'cift-tek') return d % 2 === 0 ? S5_CIFT : S5_TEK;
+    return S5_DATA[d];
+  }
+  function aktifVeri6() {
+    const d = getDigit();
+    if (aktifMod === 'cift-tek') return d % 2 === 0 ? S6_CIFT : S6_TEK;
+    return S6_DATA[d];
+  }
+
+  // ══════════════════════════════════════════════
+  // SORU 3 VERİ SETLERİ
+  // yil: şampiyonsuzluk süresi, baslangic: ilk olasılık, azalma: her yıl düşüş
+  // ══════════════════════════════════════════════
+  const S3_DATA = {
+    0: { yil:10, baslangic:0.30, azalma:0.02 },
+    1: { yil:12, baslangic:0.30, azalma:0.02 },
+    2: { yil:8,  baslangic:0.25, azalma:0.02 },
+    3: { yil:15, baslangic:0.35, azalma:0.025 },
+    4: { yil:10, baslangic:0.20, azalma:0.02 },
+    5: { yil:12, baslangic:0.40, azalma:0.03 },
+    6: { yil:7,  baslangic:0.25, azalma:0.02 },
+    7: { yil:11, baslangic:0.35, azalma:0.015 },
+    8: { yil:9,  baslangic:0.30, azalma:0.025 },
+    9: { yil:14, baslangic:0.20, azalma:0.01 },
+  };
+  const S3_CIFT = { yil:10, baslangic:0.25, azalma:0.02 };
+  const S3_TEK  = { yil:12, baslangic:0.35, azalma:0.025 };
+
+  // ══════════════════════════════════════════════
+  // SORU 4 VERİ SETLERİ
+  // z1/z2: hedef zar değerleri
+  // ══════════════════════════════════════════════
+  const S4_DATA = {
+    0: { z1:6, z2:6 },
+    1: { z1:6, z2:6 },
+    2: { z1:5, z2:5 },
+    3: { z1:6, z2:5 },
+    4: { z1:4, z2:4 },
+    5: { z1:6, z2:6 },
+    6: { z1:3, z2:6 },
+    7: { z1:6, z2:4 },
+    8: { z1:5, z2:6 },
+    9: { z1:2, z2:2 },
+  };
+  const S4_CIFT = { z1:5, z2:5 };
+  const S4_TEK  = { z1:6, z2:6 };
+
+  // ══════════════════════════════════════════════
+  // S5/S6 çift-tek setleri
+  // ══════════════════════════════════════════════
+  const S5_CIFT = { rsVaris:[null,25,55,80,14,68], rsServis:[15,72,43,88,31,67] };
+  const S5_TEK  = { rsVaris:[null,08,42,66,91,27], rsServis:[25,18,26,12,34,76] };
+  const S6_CIFT = { rsVaris:[null,55,80,25,14,68], rsServis:[42,91,28,76,15,58] };
+  const S6_TEK  = { rsVaris:[null,22,35,60,48,10], rsServis:[88,72,55,81,33,90] };
+
+  // ══════════════════════════════════════════════
+  // SORU 3 GÜNCELLE
+  // ══════════════════════════════════════════════
+  function s3Guncelle(v) {
+    const maks = Math.floor(v.baslangic / v.azalma);
+    // Soru metni
+    document.getElementById('s3-yil').textContent = v.yil;
+    document.getElementById('s3-olas').textContent = '%' + (v.baslangic*100).toFixed(0);
+    document.getElementById('s3-azalma').textContent = '%' + (v.azalma*100);
+    // Tablo
+    document.getElementById('s3-deger-uyari').style.display = 'none';
+    document.getElementById('s3-deger-tablo').style.display = '';
+    document.getElementById('s3t-yil').textContent = v.yil;
+    document.getElementById('s3t-olas').textContent = '%' + (v.baslangic*100).toFixed(0);
+    document.getElementById('s3t-azalma').textContent = '%' + (v.azalma*100) + ' düşüş';
+    document.getElementById('s3t-maks').textContent = maks;
+    // Kod güncelle
+    const ba = v.baslangic.toFixed(2);
+    const az = v.azalma.toFixed(3).replace(/0+$/,'').replace(/\.$/,'');
+    document.getElementById('s3-kod').innerHTML =
+`<span class="kw">import</span> random
+
+<span class="kw">def</span> <span class="fn">fenerbahce_simulasyon</span>():
+    olasilik = <span class="nm">${ba}</span>   <span class="cm"># başlangıç olasılığı %${(v.baslangic*100).toFixed(0)}</span>
+    yil = <span class="nm">0</span>
+
+    <span class="kw">while</span> olasilik > <span class="nm">0</span>:
+        yil += <span class="nm">1</span>
+        rassal = random.<span class="fn">random</span>()
+
+        <span class="kw">if</span> rassal < olasilik:
+            <span class="fn">print</span>(<span class="st">f"{yil}. yıl: ŞAMPİYON! (Olasılık: %{olasilik*100:.0f})"</span>)
+            <span class="kw">return</span> yil
+        <span class="kw">else</span>:
+            <span class="fn">print</span>(<span class="st">f"{yil}. yıl: Şampiyon olamadı. (Olasılık: %{olasilik*100:.0f})"</span>)
+            olasilik -= <span class="nm">${az}</span>   <span class="cm"># her yıl %${(v.azalma*100)} azalır</span>
+
+    <span class="fn">print</span>(<span class="st">"Fenerbahçe hiç şampiyon olamadı."</span>)
+    <span class="kw">return</span> <span class="kw">None</span>
+
+<span class="fn">fenerbahce_simulasyon</span>()`;
+  }
+
+  // ══════════════════════════════════════════════
+  // SORU 4 GÜNCELLE
+  // ══════════════════════════════════════════════
+  function s4Guncelle(v) {
+    const ayni = v.z1 === v.z2;
+    const kosulMetin = ayni
+      ? `Her iki zarın da ${v.z1} gelmesi`
+      : `Zar1=${v.z1} ve Zar2=${v.z2} gelmesi`;
+    const p = ayni
+      ? `1/6 × 1/6 = 1/36`
+      : `1/6 × 1/6 = 1/36`;
+    const beklenti = 36;
+
+    document.getElementById('s4-baslik').textContent = 'Zar Simülasyonu';
+    document.getElementById('s4-aciklama').innerHTML =
+      `İki zar aynı anda atılmaktadır. Kaçıncı denemede <strong>${kosulMetin.toLowerCase()}</strong>ni simüle eden Python programı yazınız.`;
+
+    document.getElementById('s4-deger-uyari').style.display = 'none';
+    document.getElementById('s4-deger-tablo').style.display = '';
+    document.getElementById('s4t-z1').textContent = v.z1;
+    document.getElementById('s4t-z2').textContent = v.z2;
+    document.getElementById('s4t-kosul').textContent = kosulMetin;
+    document.getElementById('s4t-olas').textContent = p + ' ≈ %2,78';
+    document.getElementById('s4t-beklenti').textContent = beklenti;
+    document.getElementById('s4-teori').textContent =
+      `Teorik beklenti: P = 1/6 × 1/6 = 1/36 ≈ %2,78 → Ortalama ${beklenti}. denemede hedef beklenir.`;
+
+    // Kod güncelle
+    document.getElementById('s4-kod').innerHTML =
+`<span class="kw">import</span> random
+
+<span class="kw">def</span> <span class="fn">zar_simulasyon</span>():
+    deneme = <span class="nm">0</span>
+
+    <span class="kw">while</span> <span class="kw">True</span>:
+        deneme += <span class="nm">1</span>
+        zar1 = random.<span class="fn">randint</span>(<span class="nm">1</span>, <span class="nm">6</span>)
+        zar2 = random.<span class="fn">randint</span>(<span class="nm">1</span>, <span class="nm">6</span>)
+
+        <span class="fn">print</span>(<span class="st">f"Deneme {deneme}: Zar1={zar1}, Zar2={zar2}"</span>)
+
+        <span class="kw">if</span> zar1 == <span class="nm">${v.z1}</span> <span class="kw">and</span> zar2 == <span class="nm">${v.z2}</span>:
+            <span class="fn">print</span>(<span class="st">f"\\n>>> {deneme}. denemede hedef geldi!"</span>)
+            <span class="kw">return</span> deneme
+
+<span class="fn">zar_simulasyon</span>()`;
+  }
+
+  // ══════════════════════════════════════════════
   // SON HANE VERİ SETLERİ (0–9)
   // Her digit için: rsVaris[0]=null(M1), [1..5]=M2..M6
   //                 rsServis[0..5]=M1..M6
@@ -1879,30 +2090,50 @@
     const raw = document.getElementById('last-digit').value;
     const val = raw !== '' ? parseInt(raw) : null;
     const d = val !== null ? val : '—';
+
     document.getElementById('digit-val').textContent = d;
     document.getElementById('digit-badge').textContent =
       val !== null ? `Son hane: ${d}` : 'Son hane girilmedi';
 
+    // Çift/tek rozeti
+    const badge = document.getElementById('cift-tek-badge');
+    if (val !== null) {
+      const ciftMi = val % 2 === 0;
+      badge.style.display = 'inline-block';
+      badge.textContent = ciftMi ? 'ÇİFT' : 'TEK';
+      badge.style.background = ciftMi ? '#1e3a5f' : '#2d1a4b';
+      badge.style.color = ciftMi ? '#60a5fa' : '#c084fc';
+    } else {
+      badge.style.display = 'none';
+    }
+
     if (val === null) return;
 
-    // S5 RS güncelle
-    const d5 = S5_DATA[val];
     const fmt = n => String(n).padStart(2,'0');
+
+    // ── Soru 3 ──
+    s3Guncelle(aktifVeri3());
+
+    // ── Soru 4 ──
+    s4Guncelle(aktifVeri4());
+
+    // ── Soru 5 RS ──
+    const d5 = aktifVeri5();
     document.getElementById('s5rv1').textContent = fmt(d5.rsServis[0]);
     for (let i=2; i<=6; i++) {
       document.getElementById(`s5ra${i}`).textContent = fmt(d5.rsVaris[i-1]);
       document.getElementById(`s5rv${i}`).textContent = fmt(d5.rsServis[i-1]);
     }
 
-    // S6 RS güncelle
-    const d6 = S6_DATA[val];
+    // ── Soru 6 RS ──
+    const d6 = aktifVeri6();
     document.getElementById('s6rv1').textContent = fmt(d6.rsServis[0]);
     for (let i=2; i<=6; i++) {
       document.getElementById(`s6ra${i}`).textContent = fmt(d6.rsVaris[i-1]);
       document.getElementById(`s6rv${i}`).textContent = fmt(d6.rsServis[i-1]);
     }
 
-    // Tabloları sıfırla (yeni soru, yeni başlangıç)
+    // Tabloları sıfırla
     sifirlaS5(); sifirlaS6();
   }
 
@@ -1947,7 +2178,7 @@
   // SORU 5
   // ══════════════════════════════════════════════
   function kontrolS5() {
-    const rows = simQ5(S5_DATA[getDigit()]);
+    const rows = simQ5(aktifVeri5());
     let dogru=0, toplam=0;
     // M1: ss, sb, bt, kb, sk
     toplam+=5;
@@ -1972,7 +2203,7 @@
   }
 
   function cozumGosterS5() {
-    const rows = simQ5(S5_DATA[getDigit()]);
+    const rows = simQ5(aktifVeri5());
     const r0 = rows[0];
     setCell('s5_1_ss',r0.ss); setCell('s5_1_sb',r0.sb); setCell('s5_1_bt',r0.bt); setCell('s5_1_kb',r0.kb); setCell('s5_1_sk',r0.sk);
     for (let i=1; i<6; i++) {
@@ -1993,7 +2224,7 @@
   }
 
   function kontrolS5Perf() {
-    const rows = simQ5(S5_DATA[getDigit()]);
+    const rows = simQ5(aktifVeri5());
     const p = perfQ5(rows);
     let dogru=0, toplam=5;
     dogru += checkCell('s5p_ortKuyruk', p.ortKuyruk);
@@ -2006,7 +2237,7 @@
   }
 
   function cozumGosterS5Perf() {
-    const rows = simQ5(S5_DATA[getDigit()]);
+    const rows = simQ5(aktifVeri5());
     const p = perfQ5(rows);
     [['s5p_ortKuyruk',p.ortKuyruk],['s5p_ortSistem',p.ortSistem],
      ['s5p_maxKuyruk',p.maxKuyruk],['s5p_bosKalma',p.bosKalma],['s5p_kullOran',p.kullOran]]
@@ -2020,7 +2251,7 @@
   // SORU 6
   // ══════════════════════════════════════════════
   function kontrolS6() {
-    const rows = simQ6(S6_DATA[getDigit()]);
+    const rows = simQ6(aktifVeri6());
     let dogru=0, toplam=0;
     for (let i=0; i<6; i++) {
       const r=rows[i]; const n=i+1; toplam+=5;
@@ -2035,7 +2266,7 @@
   }
 
   function cozumGosterS6() {
-    const rows = simQ6(S6_DATA[getDigit()]);
+    const rows = simQ6(aktifVeri6());
     rows.forEach((r,i) => {
       const n=i+1;
       setCell(`s6_${n}_ss`,r.ss); setCell(`s6_${n}_sb`,r.sb);
@@ -2052,7 +2283,7 @@
   }
 
   function kontrolS6Perf() {
-    const rows = simQ6(S6_DATA[getDigit()]);
+    const rows = simQ6(aktifVeri6());
     const p = perfQ6(rows);
     let dogru=0, toplam=4;
     dogru += checkCell('s6p_ortKuyruk',    p.ortKuyruk);
@@ -2332,7 +2563,7 @@
   }
 
   function cozumGosterS6Perf() {
-    const rows = simQ6(S6_DATA[getDigit()]);
+    const rows = simQ6(aktifVeri6());
     const p = perfQ6(rows);
     [['s6p_ortKuyruk',p.ortKuyruk],['s6p_ortSistem',p.ortSistem],
      ['s6p_maxKuyruk',p.maxKuyruk],['s6p_kuyrukMusteri',p.kuyrukMusteri]]
@@ -2398,7 +2629,7 @@
   }
 
   function s5AdimHintGoster(n) {
-    const d = S5_DATA[getDigit()];
+    const d = aktifVeri5();
     const rows = simQ5(d);
     const r = rows[n-1];
     const hint = document.getElementById('s5-adim-hint');
@@ -2422,7 +2653,7 @@
 
   function s5AdimKontrol() {
     if (s5Mod !== 'adim') return;
-    const rows = simQ5(S5_DATA[getDigit()]);
+    const rows = simQ5(aktifVeri5());
     const n = s5AdimSatir;
     const r = rows[n-1];
     const alanlar = S5_ALANLAR[n];
@@ -2447,7 +2678,7 @@
     const hint = document.getElementById('s5-adim-hint');
     if (!tamam) {
       // Akıllı ipucu
-      const d = S5_DATA[getDigit()]; const r2 = rows[n-1];
+      const d = aktifVeri5(); const r2 = rows[n-1];
       const prevBt = n>1 ? rows[n-2].bt : 0;
       let ipucu = `<strong style="color:#ef4444">❌ Bazı hücreler yanlış. İpucu:</strong><br>`;
       if (hatalar.includes('va')) ipucu += `• <b>Varışlar Arası:</b> RS=${String(d.rsVaris[n-1]).padStart(2,'0')} → Dağılım tablosuna bak<br>`;
@@ -2532,7 +2763,7 @@
   }
 
   function s6AdimHintGoster(n) {
-    const d = S6_DATA[getDigit()];
+    const d = aktifVeri6();
     const rows = simQ6(d);
     const rsS = String(d.rsServis[n-1]).padStart(2,'0');
     const rsV = n>1 ? String(d.rsVaris[n-1]).padStart(2,'0') : null;
@@ -2561,7 +2792,7 @@
 
   function s6AdimKontrol() {
     if (s6Mod !== 'adim') return;
-    const rows = simQ6(S6_DATA[getDigit()]);
+    const rows = simQ6(aktifVeri6());
     const n = s6AdimSatir;
     const r = rows[n-1];
 
@@ -2579,7 +2810,7 @@
     const hint = document.getElementById('s6-adim-hint');
     if (!tamam) {
       let ipucu = `<strong style="color:#ef4444">❌ Yanlış hücre var. İpucu:</strong><br>`;
-      if (hatalar.includes('ss')) ipucu += `• <b>Servis Süresi:</b> RS=${String(S6_DATA[getDigit()].rsServis[n-1]).padStart(2,'0')} → dağılım tablosuna bak<br>`;
+      if (hatalar.includes('ss')) ipucu += `• <b>Servis Süresi:</b> RS=${String(aktifVeri6().rsServis[n-1]).padStart(2,'0')} → dağılım tablosuna bak<br>`;
       if (hatalar.includes('sb')) ipucu += `• <b>Servis Başlangıç:</b> max(Varış=${r.varısZamani}, min vezne bitiş) = ${r.sb}<br>`;
       if (hatalar.includes('bt')) ipucu += `• <b>Bitiş:</b> ${r.sb} + ${r.ss} = ${r.bt}<br>`;
       if (hatalar.includes('kb')) ipucu += `• <b>Kuyruk:</b> ${r.sb} − ${r.varısZamani} = ${r.kb}<br>`;
