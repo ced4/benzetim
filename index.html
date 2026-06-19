@@ -1,0 +1,2613 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Benzetim Modelleri — Çalışma Ortamı</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f1117;
+      color: #e2e8f0;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ── SOL MENÜ ── */
+    #sidebar {
+      width: 240px;
+      min-width: 240px;
+      background: #1a1d2e;
+      border-right: 1px solid #2d3148;
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+    }
+
+    #sidebar-header {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      padding: 20px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: #fff;
+      line-height: 1.5;
+    }
+
+    #sidebar-header span {
+      display: block;
+      font-size: 10px;
+      font-weight: 400;
+      opacity: 0.8;
+      margin-top: 2px;
+    }
+
+    /* Öğrenci no kutusu */
+    #student-box {
+      margin: 14px 12px;
+      background: #252840;
+      border: 1px solid #3d4166;
+      border-radius: 10px;
+      padding: 12px;
+    }
+
+    #student-box label {
+      font-size: 11px;
+      color: #94a3b8;
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    #student-box input {
+      width: 100%;
+      background: #1a1d2e;
+      border: 1px solid #4f46e5;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 22px;
+      font-weight: 700;
+      text-align: center;
+      padding: 6px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    #student-box input:focus {
+      border-color: #7c3aed;
+    }
+
+    #digit-display {
+      text-align: center;
+      margin-top: 8px;
+      font-size: 11px;
+      color: #64748b;
+    }
+
+    #digit-display strong {
+      color: #a78bfa;
+      font-size: 13px;
+    }
+
+    /* Nav linkleri */
+    nav {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 0;
+    }
+
+    nav::-webkit-scrollbar { width: 4px; }
+    nav::-webkit-scrollbar-track { background: transparent; }
+    nav::-webkit-scrollbar-thumb { background: #3d4166; border-radius: 2px; }
+
+    .nav-section {
+      padding: 10px 14px 4px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #4f5880;
+      text-transform: uppercase;
+    }
+
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      padding: 9px 14px;
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 13px;
+      cursor: pointer;
+      text-align: left;
+      border-left: 3px solid transparent;
+      transition: all 0.15s;
+    }
+
+    .nav-btn:hover {
+      background: #252840;
+      color: #e2e8f0;
+    }
+
+    .nav-btn.active {
+      background: #252840;
+      color: #a78bfa;
+      border-left-color: #7c3aed;
+      font-weight: 600;
+    }
+
+    .nav-btn .icon {
+      font-size: 16px;
+      width: 20px;
+      text-align: center;
+    }
+
+    /* ── ANA ALAN ── */
+    #main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    #topbar {
+      background: #1a1d2e;
+      border-bottom: 1px solid #2d3148;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    #topbar h1 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #e2e8f0;
+    }
+
+    #topbar .badge {
+      background: #252840;
+      border: 1px solid #3d4166;
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    #content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 28px 32px;
+    }
+
+    #content::-webkit-scrollbar { width: 6px; }
+    #content::-webkit-scrollbar-track { background: transparent; }
+    #content::-webkit-scrollbar-thumb { background: #2d3148; border-radius: 3px; }
+
+    /* ── KART ── */
+    .card {
+      background: #1a1d2e;
+      border: 1px solid #2d3148;
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .card-title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: #7c3aed;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .card h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #e2e8f0;
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+
+    .card p {
+      font-size: 14px;
+      color: #94a3b8;
+      line-height: 1.7;
+      margin-bottom: 10px;
+    }
+
+    /* ── TABLO ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin: 14px 0;
+    }
+
+    th {
+      background: #252840;
+      color: #a78bfa;
+      padding: 10px 12px;
+      text-align: left;
+      font-weight: 600;
+      border-bottom: 2px solid #3d4166;
+    }
+
+    td {
+      padding: 9px 12px;
+      border-bottom: 1px solid #252840;
+      color: #cbd5e1;
+    }
+
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #20233a; }
+
+    /* ── HIGHLIGHT KUTUSU ── */
+    .highlight {
+      background: #1e1b4b;
+      border-left: 4px solid #7c3aed;
+      border-radius: 0 8px 8px 0;
+      padding: 14px 16px;
+      margin: 12px 0;
+      font-size: 13px;
+      color: #c4b5fd;
+      line-height: 1.6;
+    }
+
+    .highlight.green {
+      background: #052e16;
+      border-color: #22c55e;
+      color: #86efac;
+    }
+
+    .highlight.yellow {
+      background: #1c1400;
+      border-color: #eab308;
+      color: #fde047;
+    }
+
+    /* ── KOD BLOĞU ── */
+    pre {
+      background: #0d1117;
+      border: 1px solid #2d3148;
+      border-radius: 10px;
+      padding: 18px;
+      overflow-x: auto;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #e2e8f0;
+      margin: 12px 0;
+    }
+
+    .kw { color: #ff79c6; }
+    .fn { color: #50fa7b; }
+    .st { color: #f1fa8c; }
+    .cm { color: #6272a4; font-style: italic; }
+    .nm { color: #bd93f9; }
+
+    /* ── BUTON ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 18px;
+      border-radius: 8px;
+      border: none;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: #fff;
+    }
+
+    .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid #3d4166;
+      color: #94a3b8;
+    }
+
+    .btn-outline:hover { background: #252840; color: #e2e8f0; }
+
+    /* ── SAYFA GİZLE/GÖSTER ── */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ── ANİMASYON ── */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .page.active { animation: fadeIn 0.25s ease; }
+
+    /* ── ANASAYFA ── */
+    .home-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .home-card {
+      background: #1a1d2e;
+      border: 1px solid #2d3148;
+      border-radius: 12px;
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .home-card:hover {
+      border-color: #7c3aed;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(124,58,237,0.2);
+    }
+
+    .home-card .emoji { font-size: 28px; margin-bottom: 10px; }
+    .home-card h3 { font-size: 13px; font-weight: 700; color: #e2e8f0; margin-bottom: 6px; }
+    .home-card p { font-size: 12px; color: #64748b; }
+
+    /* ── SONUÇ KUTUSU ── */
+    .result-box {
+      display: none;
+      margin-top: 12px;
+      padding: 14px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .result-box.show { display: block; }
+    .result-box.correct { background: #052e16; color: #86efac; border: 1px solid #22c55e; }
+    .result-box.wrong   { background: #2d0a0a; color: #fca5a5; border: 1px solid #ef4444; }
+
+    /* ── İSTATİSTİK KARTLARI ── */
+    .istat-kart {
+      background:#1a1d2e; border:1px solid #2d3148; border-radius:12px;
+      padding:16px; text-align:center;
+    }
+    .istat-sayi { font-size:24px; font-weight:800; color:#a78bfa; margin-bottom:4px; }
+    .istat-etiket { font-size:11px; color:#64748b; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:10px; }
+    .istat-bar { background:#252840; border-radius:99px; height:5px; overflow:hidden; }
+    .istat-bar-ic { height:100%; background:linear-gradient(90deg,#4f46e5,#7c3aed); border-radius:99px; transition:width 0.6s ease; }
+
+    /* ── ROZETLER ── */
+    .rozet {
+      display:flex; align-items:center; gap:8px;
+      background:#1a1d2e; border:1px solid #2d3148; border-radius:10px;
+      padding:8px 14px; font-size:12px; color:#94a3b8;
+      transition:all 0.2s;
+    }
+    .rozet.kazanildi { border-color:#7c3aed; color:#c4b5fd; background:#1e1b4b; }
+    .rozet.kazanildi .rozet-icon { filter:none; }
+    .rozet .rozet-icon { font-size:20px; filter:grayscale(1) opacity(0.3); }
+    .rozet.kazanildi .rozet-icon { filter:none; }
+
+    /* ── SORU TAMAMLAMA MÜHRÜ ── */
+    .tamamlandi-muhur {
+      display:none; position:absolute; top:12px; right:12px;
+      background:#052e16; border:2px solid #22c55e; border-radius:8px;
+      padding:3px 10px; font-size:11px; font-weight:700; color:#86efac;
+    }
+
+    body.light .istat-kart { background:#fff; border-color:#e2e8f0; }
+    body.light .istat-bar { background:#f1f5f9; }
+    body.light .rozet { background:#fff; border-color:#e2e8f0; color:#475569; }
+    body.light .rozet.kazanildi { background:#ede9fe; border-color:#7c3aed; color:#4c1d95; }
+
+    /* ── NOTLAR ── */
+    .not-alan {
+      width:100%; min-height:120px; resize:vertical;
+      background:#0d1117; border:1px solid #3d4166; border-radius:8px;
+      color:#e2e8f0; font-size:13px; line-height:1.6; padding:10px 12px;
+      outline:none; font-family:'Segoe UI',sans-serif; transition:border-color 0.2s;
+    }
+    .not-alan:focus { border-color:#7c3aed; }
+    .not-kayit-info { font-size:11px; color:#3d4166; margin-top:6px; transition:color 0.3s; }
+    .not-kayit-info.kaydedildi { color:#22c55e; }
+
+    kbd {
+      display:inline-block; background:#252840; border:1px solid #4d5280;
+      border-radius:5px; padding:2px 8px; font-size:12px; font-family:monospace;
+      color:#a78bfa; box-shadow:0 2px 0 #1a1d2e;
+    }
+
+    /* ── AÇIK TEMA ── */
+    body.light { background:#f1f5f9; color:#1e293b; }
+    body.light #sidebar { background:#fff; border-color:#e2e8f0; }
+    body.light #topbar { background:#fff; border-color:#e2e8f0; }
+    body.light .card { background:#fff; border-color:#e2e8f0; }
+    body.light .card h2 { color:#1e293b; }
+    body.light .card p { color:#475569; }
+    body.light th { background:#f8fafc; color:#7c3aed; }
+    body.light td { color:#334155; border-color:#f1f5f9; }
+    body.light tr:hover td { background:#f8fafc; }
+    body.light .nav-btn { color:#475569; }
+    body.light .nav-btn:hover { background:#f1f5f9; color:#1e293b; }
+    body.light .nav-btn.active { background:#f1f5f9; color:#7c3aed; }
+    body.light .highlight { background:#ede9fe; border-color:#7c3aed; color:#4c1d95; }
+    body.light .highlight.green { background:#dcfce7; border-color:#22c55e; color:#166534; }
+    body.light .highlight.yellow { background:#fef9c3; border-color:#eab308; color:#713f12; }
+    body.light pre { background:#f8fafc; border-color:#e2e8f0; color:#1e293b; }
+    body.light .itablo input[type="number"] { background:#f8fafc; border-color:#cbd5e1; color:#1e293b; }
+    body.light .not-alan { background:#f8fafc; border-color:#cbd5e1; color:#1e293b; }
+    body.light #student-box { background:#f8fafc; border-color:#e2e8f0; }
+    body.light #student-box input { background:#fff; color:#1e293b; }
+    body.light .quiz-opt { background:#f8fafc; border-color:#e2e8f0; color:#334155; }
+    body.light .quiz-opt:hover { background:#ede9fe; }
+    body.light .badge { background:#f1f5f9; border-color:#e2e8f0; color:#475569; }
+    body.light #content::-webkit-scrollbar-thumb { background:#cbd5e1; }
+
+    /* ── YAZDIR ── */
+    @media print {
+      #sidebar, #topbar, .btn, .mod-toggle, .adim-satir-btn, .ipucu-btn,
+      .score-box, #quiz-baslik, #quiz-alan, #quiz-sonuc { display:none !important; }
+      body { background:#fff !important; color:#000 !important; }
+      #main { display:block !important; }
+      #content { overflow:visible !important; padding:0 !important; }
+      .page { display:block !important; }
+      .card { border:1px solid #ccc !important; background:#fff !important; page-break-inside:avoid; }
+      table { border-collapse:collapse !important; }
+      th, td { border:1px solid #999 !important; color:#000 !important; padding:6px !important; }
+      th { background:#eee !important; }
+      pre { border:1px solid #ccc !important; background:#f5f5f5 !important; color:#000 !important; }
+      .highlight { border-left:3px solid #666 !important; background:#f5f5f5 !important; color:#000 !important; }
+      h1,h2 { color:#000 !important; }
+    }
+
+    /* ── QUIZ ── */
+    .quiz-opt {
+      background: #252840; border: 2px solid #3d4166; border-radius: 10px;
+      padding: 12px 16px; margin-bottom: 10px; cursor: pointer;
+      font-size: 14px; color: #cbd5e1; transition: all 0.15s;
+    }
+    .quiz-opt:hover { border-color: #7c3aed; color: #e2e8f0; background: #2d3060; }
+    .quiz-opt.secili  { border-color: #7c3aed; background: #1e1b4b; color: #c4b5fd; }
+    .quiz-opt.dogru   { border-color: #22c55e; background: #052e16; color: #86efac; }
+    .quiz-opt.yanlis  { border-color: #ef4444; background: #2d0a0a; color: #fca5a5; }
+
+    /* ── ADIM ADIM MOD ── */
+    .mod-toggle { display:flex; gap:0; margin-bottom:14px; border-radius:8px; overflow:hidden; border:1px solid #3d4166; width:fit-content; }
+    .mod-btn { padding:8px 16px; font-size:12px; font-weight:600; background:#1a1d2e; color:#64748b; border:none; cursor:pointer; transition:all 0.15s; }
+    .mod-btn.aktif { background:#4f46e5; color:#fff; }
+    .satir-locked input { opacity:0.25; pointer-events:none; }
+    .satir-aktif { background: #1e1b4b !important; }
+    .satir-aktif td { background: #1e1b4b !important; }
+    .satir-tamam input { pointer-events:none; opacity:0.7; }
+    .adim-hint {
+      display:none; margin-top:10px; padding:10px 14px;
+      background:#1c1400; border-left:3px solid #eab308;
+      border-radius:0 8px 8px 0; font-size:12px; color:#fde047; line-height:1.8;
+    }
+    .adim-hint.show { display:block; }
+    .adim-satir-btn {
+      display:none; margin-top:12px;
+    }
+    .adim-satir-btn.show { display:flex; gap:8px; }
+    .satir-onay-badge {
+      display:inline-block; font-size:11px; font-weight:700;
+      padding:3px 10px; border-radius:20px; margin-left:8px;
+    }
+
+    /* ── İNTERAKTİF TABLO ── */
+    .itablo { width: 100%; border-collapse: collapse; font-size: 13px; margin: 14px 0; }
+    .itablo th {
+      background: #252840; color: #a78bfa; padding: 10px 8px;
+      text-align: center; font-weight: 600; border-bottom: 2px solid #3d4166;
+      font-size: 12px;
+    }
+    .itablo td { padding: 6px 4px; border-bottom: 1px solid #252840; text-align: center; color: #cbd5e1; }
+    .itablo td.fixed { color: #64748b; font-style: italic; }
+    .itablo input[type="number"] {
+      width: 64px; background: #0d1117; border: 1px solid #3d4166;
+      border-radius: 6px; color: #e2e8f0; font-size: 13px;
+      text-align: center; padding: 5px 4px; outline: none;
+      transition: border-color 0.2s;
+    }
+    .itablo input[type="number"]:focus { border-color: #7c3aed; }
+    .itablo input.correct-cell { border-color: #22c55e !important; background: #052e16; }
+    .itablo input.wrong-cell   { border-color: #ef4444 !important; background: #2d0a0a; }
+
+    .score-box {
+      display: none; margin-top: 14px; padding: 16px 20px;
+      border-radius: 10px; font-size: 14px; font-weight: 600;
+      background: #1a1d2e; border: 1px solid #3d4166;
+    }
+    .score-box.show { display: block; }
+    .score-box .score-num { font-size: 28px; font-weight: 800; color: #a78bfa; }
+    .score-box .score-detail { font-size: 12px; color: #64748b; margin-top: 6px; line-height: 1.7; }
+
+    .ipucu-btn {
+      background: none; border: 1px dashed #3d4166; color: #64748b;
+      border-radius: 6px; padding: 5px 12px; font-size: 12px; cursor: pointer;
+      transition: all 0.15s; margin-left: 8px;
+    }
+    .ipucu-btn:hover { border-color: #7c3aed; color: #a78bfa; }
+    .ipucu-box {
+      display: none; margin-top: 10px; padding: 12px 14px;
+      background: #1e1b4b; border-left: 3px solid #7c3aed;
+      border-radius: 0 8px 8px 0; font-size: 12px; color: #c4b5fd; line-height: 1.7;
+    }
+    .ipucu-box.show { display: block; }
+
+    .perf-input-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 0; border-bottom: 1px solid #252840;
+    }
+    .perf-input-row:last-child { border-bottom: none; }
+    .perf-label { flex: 1; font-size: 13px; color: #94a3b8; }
+    .perf-input-row input {
+      width: 80px; background: #0d1117; border: 1px solid #3d4166;
+      border-radius: 6px; color: #e2e8f0; font-size: 13px;
+      text-align: center; padding: 6px; outline: none;
+    }
+    .perf-input-row input.correct-cell { border-color: #22c55e; background: #052e16; }
+    .perf-input-row input.wrong-cell   { border-color: #ef4444; background: #2d0a0a; }
+    .perf-unit { font-size: 12px; color: #64748b; width: 40px; }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════ SOL MENÜ ══════════════ -->
+<div id="sidebar">
+  <div id="sidebar-header">
+    Benzetim Modelleri
+    <span>Ankara Medipol Üniversitesi</span>
+  </div>
+
+  <div id="student-box">
+    <label>Okul Numarası Son Hanesi</label>
+    <input type="number" id="last-digit" min="0" max="9" placeholder="?" maxlength="1"
+           oninput="if(this.value.length>1)this.value=this.value.slice(-1); updateDigit()"/>
+    <div id="digit-display">Hane: <strong id="digit-val">—</strong></div>
+  </div>
+
+  <nav>
+    <div class="nav-section">Genel</div>
+    <button class="nav-btn active" onclick="showPage('home', this)">
+      <span class="icon">🏠</span> Ana Sayfa
+    </button>
+
+    <div class="nav-section">Mod</div>
+    <button class="nav-btn" onclick="showPage('quiz', this)">
+      <span class="icon">🎯</span> Quiz Modu
+    </button>
+    <button class="nav-btn" onclick="showPage('notlar', this)">
+      <span class="icon">📝</span> Notlarım
+    </button>
+
+    <div class="nav-section">Sorular</div>
+    <button class="nav-btn" onclick="showPage('s1', this)">
+      <span class="icon">📖</span> Soru 1 — Benzetim Nedir?
+    </button>
+    <button class="nav-btn" onclick="showPage('s2', this)">
+      <span class="icon">📊</span> Soru 2 — Kesikli / Sürekli
+    </button>
+    <button class="nav-btn" onclick="showPage('s3', this)">
+      <span class="icon">⚽</span> Soru 3 — Fenerbahçe
+    </button>
+    <button class="nav-btn" onclick="showPage('s4', this)">
+      <span class="icon">🎲</span> Soru 4 — Çift Zar
+    </button>
+    <button class="nav-btn" onclick="showPage('s5', this)">
+      <span class="icon">🏦</span> Soru 5 — G/G/1 Kuyruk
+    </button>
+    <button class="nav-btn" onclick="showPage('s6', this)">
+      <span class="icon">🏛️</span> Soru 6 — G/G/2 Kuyruk
+    </button>
+  </nav>
+</div>
+
+<!-- ══════════════ ANA ALAN ══════════════ -->
+<div id="main">
+  <div id="topbar">
+    <h1 id="page-title">Ana Sayfa</h1>
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+      <div class="badge" id="digit-badge">Son hane girilmedi</div>
+      <button class="badge" id="tema-btn" onclick="temaDegistir()" style="cursor:pointer;border:none;background:#252840;color:#94a3b8;" title="Tema (T)">☀️ Açık Tema</button>
+      <button class="badge" onclick="sayfaYazdir()" style="cursor:pointer;border:none;background:#252840;color:#94a3b8;" title="Yazdır (P)">🖨️ Yazdır</button>
+      <button class="badge" onclick="showPage('kisayollar',null)" style="cursor:pointer;border:none;background:#252840;color:#94a3b8;" title="Kısayollar (?)">⌨️ Kısayollar</button>
+    </div>
+  </div>
+
+  <div id="content">
+
+    <!-- ── ANA SAYFA ── -->
+    <div class="page active" id="page-home">
+      <div class="card">
+        <div class="card-title">Hoş Geldin</div>
+        <h2>Benzetim Modelleri Çalışma Ortamı</h2>
+        <p>Bu ortam <strong>Final 2025–26</strong> örnek sorularını içermektedir. Sol menüden istediğin soruya geç. Okul numaranın son hanesini girerek sorulardaki değişkenlerin senin numarana özel halini görebilirsin.</p>
+      </div>
+
+      <!-- İstatistik Kartları -->
+      <div id="istat-panel" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
+        <div class="istat-kart" id="ik-sorular">
+          <div class="istat-sayi" id="ik-sorular-sayi">0/6</div>
+          <div class="istat-etiket">Çözülen Soru</div>
+          <div class="istat-bar"><div class="istat-bar-ic" id="ik-sorular-bar" style="width:0%"></div></div>
+        </div>
+        <div class="istat-kart" id="ik-quiz">
+          <div class="istat-sayi" id="ik-quiz-sayi">—</div>
+          <div class="istat-etiket">En Yüksek Quiz</div>
+          <div class="istat-bar"><div class="istat-bar-ic" id="ik-quiz-bar" style="width:0%"></div></div>
+        </div>
+        <div class="istat-kart" id="ik-streak">
+          <div class="istat-sayi" id="ik-streak-sayi">0</div>
+          <div class="istat-etiket">Quiz Denemesi</div>
+          <div class="istat-bar"><div class="istat-bar-ic" id="ik-streak-bar" style="width:0%;background:#22c55e"></div></div>
+        </div>
+        <div class="istat-kart" id="ik-rozet">
+          <div id="ik-rozet-icon" style="font-size:28px;margin-bottom:4px;">🔒</div>
+          <div class="istat-etiket" id="ik-rozet-ad">Rozet Kazan</div>
+        </div>
+      </div>
+
+      <!-- Rozet Paneli -->
+      <div id="rozet-panel" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;"></div>
+
+      <div class="home-grid">
+        <div class="home-card" onclick="showPageById('s1')">
+          <div class="emoji">📖</div>
+          <h3>Soru 1</h3>
+          <p>Benzetim nedir?</p>
+        </div>
+        <div class="home-card" onclick="showPageById('s2')">
+          <div class="emoji">📊</div>
+          <h3>Soru 2</h3>
+          <p>Kesikli / Sürekli benzetim</p>
+        </div>
+        <div class="home-card" onclick="showPageById('s3')">
+          <div class="emoji">⚽</div>
+          <h3>Soru 3</h3>
+          <p>Fenerbahçe simülasyonu</p>
+        </div>
+        <div class="home-card" onclick="showPageById('s4')">
+          <div class="emoji">🎲</div>
+          <h3>Soru 4</h3>
+          <p>Çift zar simülasyonu</p>
+        </div>
+        <div class="home-card" onclick="showPageById('s5')">
+          <div class="emoji">🏦</div>
+          <h3>Soru 5</h3>
+          <p>G/G/1 — Tek vezne kuyruğu</p>
+        </div>
+        <div class="home-card" onclick="showPageById('s6')">
+          <div class="emoji">🏛️</div>
+          <h3>Soru 6</h3>
+          <p>G/G/2 — İki vezne kuyruğu</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SORU 1 ── -->
+    <div class="page" id="page-s1">
+      <div class="card">
+        <div class="card-title">Soru 1</div>
+        <h2>Benzetim (simülasyon) nedir? Açıklayınız.</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Tanım</div>
+        <p><strong>Benzetim (simülasyon)</strong>, gerçek bir sistem ya da sürecin bilgisayar ortamında matematiksel/mantıksal bir modelle taklit edilmesidir. Amaç, sistemi doğrudan değiştirmeden ya da maliyetli denemeler yapmadan onun davranışını anlamak, analiz etmek ve tahmin etmektir.</p>
+
+        <div class="highlight">
+          Benzetim = Gerçek sistemin bilgisayarda taklit edilmesi
+        </div>
+
+        <p>Temel özellikleri:</p>
+        <table>
+          <thead><tr><th>Özellik</th><th>Açıklama</th></tr></thead>
+          <tbody>
+            <tr><td>Model kurma</td><td>Gerçek sistemin soyutlanmış temsili oluşturulur</td></tr>
+            <tr><td>Zaman ilerletme</td><td>Gerçek ya da hızlandırılmış zaman ekseni üzerinde çalışır</td></tr>
+            <tr><td>Rastlantısallık</td><td>Olasılıksal süreçler rastgele sayılarla temsil edilir</td></tr>
+            <tr><td>Karar desteği</td><td>Farklı senaryolar "denemeden" karşılaştırılabilir</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Neden Benzetim Kullanılır?</div>
+        <table>
+          <thead><tr><th>Durum</th><th>Örnek</th></tr></thead>
+          <tbody>
+            <tr><td>Gerçek sistem tehlikeli</td><td>Nükleer reaktör testi, uçak kazası senaryosu</td></tr>
+            <tr><td>Sistem henüz yok</td><td>Tasarım aşamasındaki fabrika</td></tr>
+            <tr><td>Maliyet çok yüksek</td><td>Her konfigürasyonu gerçekte denemek pahalı</td></tr>
+            <tr><td>Zaman kısıtı</td><td>Yıllık süreci saatlerde simüle etmek</td></tr>
+          </tbody>
+        </table>
+        <div class="highlight green">
+          Örnek: Hastane acil servisinde kaç doktor gerektiğini, gerçekte doktor işe almadan simülasyonla test edebiliriz.
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SORU 2 ── -->
+    <div class="page" id="page-s2">
+      <div class="card">
+        <div class="card-title">Soru 2</div>
+        <h2>Kesikli benzetim ve sürekli benzetim nedir? Örneklerle açıklayınız.</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Kesikli Olay Benzetimi (Discrete Event Simulation)</div>
+        <p>Sistemin durumu <strong>yalnızca belirli olaylar gerçekleştiğinde</strong> değişir. Olaylar arasında sistem sabit kalır, zaman olaydan olaya atlar.</p>
+        <div class="highlight">
+          Müşteri geldi → durum değişti<br>
+          Servis bitti → durum değişti<br>
+          Bu iki olay arasında → hiçbir şey değişmez
+        </div>
+        <table>
+          <thead><tr><th>Kullanım Alanı</th></tr></thead>
+          <tbody>
+            <tr><td>Banka / market kuyruğu</td></tr>
+            <tr><td>Çağrı merkezi (telefon gelişleri)</td></tr>
+            <tr><td>Fabrika üretim hattı</td></tr>
+            <tr><td>Liman yük taşıma</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Sürekli Benzetim (Continuous Simulation)</div>
+        <p>Sistemin durumu <strong>zamana bağlı olarak sürekli değişir</strong>. Diferansiyel denklemlerle modellenir, zaman küçük adımlarla (Δt) ilerletilir.</p>
+        <div class="highlight">
+          Her Δt anında hız, konum, sıcaklık... sürekli yeniden hesaplanır
+        </div>
+        <table>
+          <thead><tr><th>Kullanım Alanı</th></tr></thead>
+          <tbody>
+            <tr><td>Hava durumu tahmin modeli</td></tr>
+            <tr><td>Uçuş simülatörü</td></tr>
+            <tr><td>Kimyasal reaksiyon süreçleri</td></tr>
+            <tr><td>Elektrik devresi analizi</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Karşılaştırma</div>
+        <table>
+          <thead><tr><th>Özellik</th><th>Kesikli</th><th>Sürekli</th></tr></thead>
+          <tbody>
+            <tr><td>Durum değişimi</td><td>Olaylarla, anlık</td><td>Zamanla, kesintisiz</td></tr>
+            <tr><td>Zaman ilerletme</td><td>Olaydan olaya atlar</td><td>Küçük Δt adımlarıyla</td></tr>
+            <tr><td>Matematiksel yapı</td><td>Olay listesi, kuyruk</td><td>Diferansiyel denklem</td></tr>
+            <tr><td>Örnek</td><td>Banka kuyruğu</td><td>Uçuş simülatörü</td></tr>
+          </tbody>
+        </table>
+        <div class="highlight yellow">
+          Hibrit benzetim: Bazı sistemler ikisini birden kullanır. Fabrikada makine arızası kesikli, sıcaklık değişimi sürekli modellenebilir.
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SORU 3 ── -->
+    <div class="page" id="page-s3">
+      <div class="card">
+        <div class="card-title">Soru 3</div>
+        <h2>Fenerbahçe Şampiyonluk Simülasyonu</h2>
+        <p>Fenerbahçe 12 yıldır şampiyon olamamaktadır. Önümüzdeki yıl şampiyon olma olasılığı <strong>%30</strong>'dur. Şampiyon olamadığı her yıl bu olasılık <strong>%2</strong> daha azalmaktadır. Kaç yıl sonra şampiyon olabileceğini simüle eden Python programı yazınız.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Python Kodu</div>
+        <pre><span class="kw">import</span> random
+
+<span class="kw">def</span> <span class="fn">fenerbahce_simulasyon</span>():
+    olasilik = <span class="nm">0.30</span>   <span class="cm"># başlangıç olasılığı %30</span>
+    yil = <span class="nm">0</span>
+
+    <span class="kw">while</span> olasilik > <span class="nm">0</span>:
+        yil += <span class="nm">1</span>
+        rassal = random.<span class="fn">random</span>()   <span class="cm"># 0 ile 1 arasında rastgele sayı</span>
+
+        <span class="kw">if</span> rassal < olasilik:
+            <span class="fn">print</span>(<span class="st">f"{yil}. yıl: ŞAMPİYON! (Olasılık: %{olasilik*100:.0f})"</span>)
+            <span class="kw">return</span> yil
+        <span class="kw">else</span>:
+            <span class="fn">print</span>(<span class="st">f"{yil}. yıl: Şampiyon olamadı. (Olasılık: %{olasilik*100:.0f})"</span>)
+            olasilik -= <span class="nm">0.02</span>   <span class="cm"># başarısız her yılda %2 azalır</span>
+
+    <span class="fn">print</span>(<span class="st">"Fenerbahçe hiç şampiyon olamadı."</span>)
+    <span class="kw">return</span> <span class="kw">None</span>
+
+<span class="fn">fenerbahce_simulasyon</span>()</pre>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Kodun Mantığı</div>
+        <table>
+          <thead><tr><th>Satır</th><th>Açıklama</th></tr></thead>
+          <tbody>
+            <tr><td><code>olasilik = 0.30</code></td><td>Başlangıç olasılığı %30</td></tr>
+            <tr><td><code>random.random()</code></td><td>0–1 arası rastgele sayı üretir</td></tr>
+            <tr><td><code>rassal &lt; olasilik</code></td><td>Rastgele sayı olasılıktan küçükse şampiyon</td></tr>
+            <tr><td><code>olasilik -= 0.02</code></td><td>Her başarısız yılda olasılık %2 düşer</td></tr>
+            <tr><td><code>while olasilik &gt; 0</code></td><td>Olasılık sıfırın altına düşünce döngü biter</td></tr>
+          </tbody>
+        </table>
+        <div class="highlight green">
+          Not: random.random() her çalıştırmada farklı sonuç verir — bu simülasyonun stokastik doğasıdır.
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SORU 4 ── -->
+    <div class="page" id="page-s4">
+      <div class="card">
+        <div class="card-title">Soru 4</div>
+        <h2>Çift Zar Simülasyonu</h2>
+        <p>İki zar aynı anda atılmaktadır. Kaçıncı denemede <strong>her iki zarın da 6</strong> geldiğini simüle eden Python programı yazınız.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Python Kodu</div>
+        <pre><span class="kw">import</span> random
+
+<span class="kw">def</span> <span class="fn">cift_alti_simulasyon</span>():
+    deneme = <span class="nm">0</span>
+
+    <span class="kw">while</span> <span class="kw">True</span>:
+        deneme += <span class="nm">1</span>
+        zar1 = random.<span class="fn">randint</span>(<span class="nm">1</span>, <span class="nm">6</span>)
+        zar2 = random.<span class="fn">randint</span>(<span class="nm">1</span>, <span class="nm">6</span>)
+
+        <span class="fn">print</span>(<span class="st">f"Deneme {deneme}: Zar1={zar1}, Zar2={zar2}"</span>)
+
+        <span class="kw">if</span> zar1 == <span class="nm">6</span> <span class="kw">and</span> zar2 == <span class="nm">6</span>:
+            <span class="fn">print</span>(<span class="st">f"\n>>> {deneme}. denemede çift 6 geldi!"</span>)
+            <span class="kw">return</span> deneme
+
+<span class="fn">cift_alti_simulasyon</span>()</pre>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Kodun Mantığı</div>
+        <table>
+          <thead><tr><th>Satır</th><th>Açıklama</th></tr></thead>
+          <tbody>
+            <tr><td><code>random.randint(1, 6)</code></td><td>1 ile 6 arasında rastgele tam sayı</td></tr>
+            <tr><td><code>while True</code></td><td>Çift 6 gelene kadar döngü sürer</td></tr>
+            <tr><td><code>zar1 == 6 and zar2 == 6</code></td><td>Her iki zar da 6 ise koşul sağlanır</td></tr>
+            <tr><td><code>deneme</code> sayacı</td><td>Kaçıncı denemede başarı geldiğini tutar</td></tr>
+          </tbody>
+        </table>
+        <div class="highlight yellow">
+          Teorik beklenti: P = 1/6 × 1/6 = 1/36 ≈ %2,78 → Ortalama 36. denemede çift 6 beklenir.
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SORU 5 ── -->
+    <div class="page" id="page-s5">
+      <div class="card">
+        <div class="card-title">Soru 5 — G/G/1</div>
+        <h2>Tek Vezneli Banka Kuyruğu Simülasyonu</h2>
+        <p>Bankaya gelen ilk 6 müşteri için simülasyon yapılacaktır. İlk müşteri <strong>t = 0</strong>'da gelmektedir. Tek vezne, sırayla hizmet verir.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Dağılım Tabloları</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div>
+            <p style="font-weight:600;color:#a78bfa;margin-bottom:8px;">Varışlar Arası Süre</p>
+            <table>
+              <thead><tr><th>RS Aralığı</th><th>Süre (dk)</th><th>Olasılık</th></tr></thead>
+              <tbody>
+                <tr><td>00–19</td><td>1</td><td>0.20</td></tr>
+                <tr><td>20–59</td><td>2</td><td>0.40</td></tr>
+                <tr><td>60–89</td><td>3</td><td>0.30</td></tr>
+                <tr><td>90–99</td><td>4</td><td>0.10</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <p style="font-weight:600;color:#a78bfa;margin-bottom:8px;">Servis Süresi</p>
+            <table>
+              <thead><tr><th>RS Aralığı</th><th>Süre (dk)</th><th>Olasılık</th></tr></thead>
+              <tbody>
+                <tr><td>00–29</td><td>2</td><td>0.30</td></tr>
+                <tr><td>30–79</td><td>3</td><td>0.50</td></tr>
+                <tr><td>80–99</td><td>4</td><td>0.20</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Rassal Sayılar
+          <span style="font-size:11px;color:#64748b;font-weight:400;margin-left:8px;">— son haneye göre otomatik değişir</span>
+        </div>
+        <table id="s5-rs-tablo">
+          <thead><tr><th>Müşteri</th><th>RS (Varış)</th><th>RS (Servis)</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>—</td><td id="s5rv1">25</td></tr>
+            <tr><td>2</td><td id="s5ra2">08</td><td id="s5rv2">18</td></tr>
+            <tr><td>3</td><td id="s5ra3">42</td><td id="s5rv3">26</td></tr>
+            <tr><td>4</td><td id="s5ra4">66</td><td id="s5rv4">12</td></tr>
+            <tr><td>5</td><td id="s5ra5">91</td><td id="s5rv5">34</td></tr>
+            <tr><td>6</td><td id="s5ra6">27</td><td id="s5rv6">76</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- İNTERAKTİF TABLO -->
+      <div class="card">
+        <div class="card-title" style="display:flex;align-items:center;justify-content:space-between;">
+          <span>Simülasyon Tablosunu Doldur</span>
+          <button class="ipucu-btn" onclick="toggleIpucu('s5-ipucu')">💡 Formüller</button>
+        </div>
+
+        <div class="mod-toggle">
+          <button class="mod-btn aktif" id="s5-mod-serbest" onclick="s5ModDegistir('serbest')">✏️ Serbest Doldur</button>
+          <button class="mod-btn" id="s5-mod-adim" onclick="s5ModDegistir('adim')">🪜 Adım Adım Çöz</button>
+        </div>
+
+        <div class="adim-hint" id="s5-adim-hint"></div>
+        <div class="adim-satir-btn" id="s5-adim-buton">
+          <button class="btn btn-primary" onclick="s5AdimKontrol()">✅ Bu Satırı Onayla</button>
+          <span id="s5-adim-ilerleme" style="font-size:12px;color:#64748b;align-self:center;"></span>
+        </div>
+
+        <div class="ipucu-box" id="s5-ipucu">
+          <strong>Varışlar Arası Süre:</strong> RS'ye bakarak dağılım tablosundan bul<br>
+          <strong>Varış Zamanı:</strong> Önceki varış zamanı + Varışlar arası süre<br>
+          <strong>Servis Süresi:</strong> RS'ye bakarak dağılım tablosundan bul<br>
+          <strong>Servis Başlangıç:</strong> max(Varış Zamanı, Önceki Servis Bitişi)<br>
+          <strong>Servis Bitiş:</strong> Servis Başlangıç + Servis Süresi<br>
+          <strong>Kuyrukta Bekleme:</strong> Servis Başlangıç − Varış Zamanı<br>
+          <strong>Sistemde Kalma:</strong> Servis Bitiş − Varış Zamanı
+        </div>
+
+        <table class="itablo" id="s5-tablo">
+          <thead>
+            <tr>
+              <th>Müşteri</th>
+              <th>Var. Arası</th>
+              <th>Varış Zamanı</th>
+              <th>Servis Süresi</th>
+              <th>Servis Başl.</th>
+              <th>Servis Bitiş</th>
+              <th>Kuyruk Bek.</th>
+              <th>Sistemde</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- M1: varArasi=-, varış=0, servis=2, başl=0, bitiş=2, kuyruk=0, sistem=2 -->
+            <tr>
+              <td>1</td>
+              <td class="fixed">—</td>
+              <td class="fixed">0</td>
+              <td><input type="number" id="s5_1_ss" min="0" max="9" placeholder="?"></td>
+              <td><input type="number" id="s5_1_sb" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s5_1_bt" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s5_1_kb" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s5_1_sk" min="0" max="99" placeholder="?"></td>
+            </tr>
+            <!-- M2: varArasi=1, varış=1, servis=2, başl=2, bitiş=4, kuyruk=1, sistem=3 -->
+            <tr>
+              <td>2</td>
+              <td><input type="number" id="s5_2_va" min="0" max="9" placeholder="?"></td>
+              <td><input type="number" id="s5_2_vz" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s5_2_ss" min="0" max="9" placeholder="?"></td>
+              <td><input type="number" id="s5_2_sb" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s5_2_bt" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s5_2_kb" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s5_2_sk" min="0" max="99" placeholder="?"></td>
+            </tr>
+            <!-- M3: varArasi=2, varış=3, servis=2, başl=4, bitiş=6, kuyruk=1, sistem=3 -->
+            <tr>
+              <td>3</td>
+              <td><input type="number" id="s5_3_va" min="0" max="9" placeholder="?"></td>
+              <td><input type="number" id="s5_3_vz" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s5_3_ss" min="0" max="9" placeholder="?"></td>
+              <td><input type="number" id="s5_3_sb" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s5_3_bt" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s5_3_kb" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s5_3_sk" min="0" max="99" placeholder="?"></td>
+            </tr>
+            <!-- M4: varArasi=3, varış=6, servis=2, başl=6, bitiş=8, kuyruk=0, sistem=2 -->
+            <tr>
+              <td>4</td>
+              <td><input type="number" id="s5_4_va" min="0" max="9" placeholder="?"></td>
+              <td><input type="number" id="s5_4_vz" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s5_4_ss" min="0" max="9" placeholder="?"></td>
+              <td><input type="number" id="s5_4_sb" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s5_4_bt" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s5_4_kb" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s5_4_sk" min="0" max="99" placeholder="?"></td>
+            </tr>
+            <!-- M5: varArasi=4, varış=10, servis=3, başl=10, bitiş=13, kuyruk=0, sistem=3 -->
+            <tr>
+              <td>5</td>
+              <td><input type="number" id="s5_5_va" min="0" max="9" placeholder="?"></td>
+              <td><input type="number" id="s5_5_vz" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s5_5_ss" min="0" max="9" placeholder="?"></td>
+              <td><input type="number" id="s5_5_sb" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s5_5_bt" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s5_5_kb" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s5_5_sk" min="0" max="99" placeholder="?"></td>
+            </tr>
+            <!-- M6: varArasi=2, varış=12, servis=3, başl=13, bitiş=16, kuyruk=1, sistem=4 -->
+            <tr>
+              <td>6</td>
+              <td><input type="number" id="s5_6_va" min="0" max="9" placeholder="?"></td>
+              <td><input type="number" id="s5_6_vz" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s5_6_ss" min="0" max="9" placeholder="?"></td>
+              <td><input type="number" id="s5_6_sb" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s5_6_bt" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s5_6_kb" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s5_6_sk" min="0" max="99" placeholder="?"></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="kontrolS5()">✅ Tabloyu Kontrol Et</button>
+          <button class="btn btn-outline" onclick="cozumGosterS5()">👁 Çözümü Göster</button>
+          <button class="btn btn-outline" onclick="sifirlaS5()">🔄 Sıfırla</button>
+        </div>
+        <div class="score-box" id="s5-score"></div>
+      </div>
+
+      <!-- PERFORMANS ÖLÇÜTLER -->
+      <div class="card">
+        <div class="card-title" style="display:flex;align-items:center;justify-content:space-between;">
+          <span>Performans Ölçütleri — Kendin Hesapla</span>
+          <button class="ipucu-btn" onclick="toggleIpucu('s5-perf-ipucu')">💡 İpucu</button>
+        </div>
+        <div class="ipucu-box" id="s5-perf-ipucu">
+          <strong>Ort. Kuyruk:</strong> Tüm kuyruk bekleme sürelerinin toplamı ÷ 6<br>
+          <strong>Ort. Sistem:</strong> Tüm sistemde kalma sürelerinin toplamı ÷ 6<br>
+          <strong>Maks. Kuyruk:</strong> Kuyruk bekleme sürelerinin en büyüğü<br>
+          <strong>Boş Kalma:</strong> Veznenin servis vermediği toplam süre (önceki bitiş ile sonraki varış arasındaki boşluk)<br>
+          <strong>Kullanım %:</strong> (Toplam servis süresi ÷ Toplam simülasyon süresi) × 100
+        </div>
+
+        <div style="margin-top:12px;">
+          <div class="perf-input-row">
+            <div class="perf-label">Ortalama kuyrukta bekleme süresi</div>
+            <input type="number" id="s5p_ortKuyruk" step="0.01" placeholder="?">
+            <div class="perf-unit">dk</div>
+          </div>
+          <div class="perf-input-row">
+            <div class="perf-label">Ortalama sistemde kalma süresi</div>
+            <input type="number" id="s5p_ortSistem" step="0.01" placeholder="?">
+            <div class="perf-unit">dk</div>
+          </div>
+          <div class="perf-input-row">
+            <div class="perf-label">Maksimum kuyruk bekleme süresi</div>
+            <input type="number" id="s5p_maxKuyruk" step="0.01" placeholder="?">
+            <div class="perf-unit">dk</div>
+          </div>
+          <div class="perf-input-row">
+            <div class="perf-label">Veznenin toplam boş kalma süresi</div>
+            <input type="number" id="s5p_bosKalma" step="0.01" placeholder="?">
+            <div class="perf-unit">dk</div>
+          </div>
+          <div class="perf-input-row">
+            <div class="perf-label">Veznenin kullanım oranı</div>
+            <input type="number" id="s5p_kullOran" step="0.1" placeholder="?">
+            <div class="perf-unit">%</div>
+          </div>
+        </div>
+        <div style="margin-top:14px;display:flex;gap:10px;">
+          <button class="btn btn-primary" onclick="kontrolS5Perf()">✅ Kontrol Et</button>
+          <button class="btn btn-outline" onclick="cozumGosterS5Perf()">👁 Cevapları Göster</button>
+        </div>
+        <div class="score-box" id="s5-perf-score"></div>
+      </div>
+    </div>
+
+    <!-- ── SORU 6 ── -->
+    <div class="page" id="page-s6">
+      <div class="card">
+        <div class="card-title">Soru 6 — G/G/2</div>
+        <h2>İki Vezneli Banka Kuyruğu Simülasyonu</h2>
+        <p>Bankada <strong>V1</strong> ve <strong>V2</strong> olmak üzere 2 vezne bulunmaktadır. İlk müşteri <strong>t = 0</strong>'da gelmektedir.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Dağılım Tabloları</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div>
+            <p style="font-weight:600;color:#a78bfa;margin-bottom:8px;">Varışlar Arası Süre</p>
+            <table>
+              <thead><tr><th>RS Aralığı</th><th>Süre (dk)</th></tr></thead>
+              <tbody>
+                <tr><td>00–29</td><td>1</td></tr>
+                <tr><td>30–69</td><td>2</td></tr>
+                <tr><td>70–99</td><td>3</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <p style="font-weight:600;color:#a78bfa;margin-bottom:8px;">Servis Süresi</p>
+            <table>
+              <thead><tr><th>RS Aralığı</th><th>Süre (dk)</th></tr></thead>
+              <tbody>
+                <tr><td>00–39</td><td>2</td></tr>
+                <tr><td>40–79</td><td>3</td></tr>
+                <tr><td>80–99</td><td>4</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Rassal Sayılar
+          <span style="font-size:11px;color:#64748b;font-weight:400;margin-left:8px;">— son haneye göre otomatik değişir</span>
+        </div>
+        <table>
+          <thead><tr><th>Müşteri</th><th>RS (Varış)</th><th>RS (Servis)</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>—</td><td id="s6rv1">88</td></tr>
+            <tr><td>2</td><td id="s6ra2">22</td><td id="s6rv2">72</td></tr>
+            <tr><td>3</td><td id="s6ra3">35</td><td id="s6rv3">55</td></tr>
+            <tr><td>4</td><td id="s6ra4">60</td><td id="s6rv4">81</td></tr>
+            <tr><td>5</td><td id="s6ra5">48</td><td id="s6rv5">33</td></tr>
+            <tr><td>6</td><td id="s6ra6">10</td><td id="s6rv6">90</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-title">İki Vezne Mantığı</div>
+        <div class="highlight">
+          Kural: Gelen müşteri boş vezneden birine girer.<br>
+          Her iki vezne doluysa → Kuyruk oluşur, müşteri bekler.<br>
+          Servis Başlangıç = max(Varış Zamanı, en erken boşalan vezne bitişi)<br>
+          Kuyrukta Bekleme = Servis Başlangıç − Varış Zamanı
+        </div>
+      </div>
+
+      <!-- İNTERAKTİF TABLO S6 -->
+      <div class="card">
+        <div class="card-title" style="display:flex;align-items:center;justify-content:space-between;">
+          <span>Simülasyon Tablosunu Doldur</span>
+          <button class="ipucu-btn" onclick="toggleIpucu('s6-ipucu')">💡 İpucu</button>
+        </div>
+
+        <div class="mod-toggle">
+          <button class="mod-btn aktif" id="s6-mod-serbest" onclick="s6ModDegistir('serbest')">✏️ Serbest Doldur</button>
+          <button class="mod-btn" id="s6-mod-adim" onclick="s6ModDegistir('adim')">🪜 Adım Adım Çöz</button>
+        </div>
+
+        <div class="adim-hint" id="s6-adim-hint"></div>
+        <div class="adim-satir-btn" id="s6-adim-buton">
+          <button class="btn btn-primary" onclick="s6AdimKontrol()">✅ Bu Satırı Onayla</button>
+          <span id="s6-adim-ilerleme" style="font-size:12px;color:#64748b;align-self:center;"></span>
+        </div>
+
+        <div class="ipucu-box" id="s6-ipucu">
+          <strong>M1:</strong> t=0'da gelir, V1 boş → V1'e girer, servis süresi RS=88 → 4 dk<br>
+          <strong>M2:</strong> t=1'de gelir, V2 boş → V2'ye girer, RS=72 → 3 dk<br>
+          <strong>M3:</strong> t=3'te gelir, V1 dolu (4'e k.), V2 dolu (4'e k.) → Bekler! Başlangıç=4<br>
+          <strong>M4:</strong> t=5'te gelir, V2 boşaldı (4'te) → V2'ye girer, RS=81 → 4 dk<br>
+          <strong>M5:</strong> t=7'de gelir, V1 boşaldı (7'de) → V1'e girer, RS=33 → 2 dk<br>
+          <strong>M6:</strong> t=8'de gelir, V1 dolu (9'a k.), V2 dolu (9'a k.) → Bekler! Başlangıç=9
+        </div>
+
+        <table class="itablo">
+          <thead>
+            <tr>
+              <th>Müşteri</th>
+              <th>Varış Zamanı</th>
+              <th>Vezne</th>
+              <th>Servis Süresi</th>
+              <th>Servis Başl.</th>
+              <th>Servis Bitiş</th>
+              <th>Kuyruk Bek.</th>
+              <th>Sistemde</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td class="fixed">0</td>
+              <td class="fixed" style="color:#a78bfa">V1</td>
+              <td><input type="number" id="s6_1_ss" min="0" max="9" placeholder="?"></td>
+              <td><input type="number" id="s6_1_sb" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s6_1_bt" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s6_1_kb" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s6_1_sk" min="0" max="99" placeholder="?"></td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td class="fixed">1</td>
+              <td class="fixed" style="color:#a78bfa">V2</td>
+              <td><input type="number" id="s6_2_ss" min="0" max="9" placeholder="?"></td>
+              <td><input type="number" id="s6_2_sb" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s6_2_bt" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s6_2_kb" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s6_2_sk" min="0" max="99" placeholder="?"></td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td class="fixed">3</td>
+              <td class="fixed" style="color:#f59e0b">KUYRUK→V1</td>
+              <td><input type="number" id="s6_3_ss" min="0" max="9" placeholder="?"></td>
+              <td><input type="number" id="s6_3_sb" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s6_3_bt" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s6_3_kb" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s6_3_sk" min="0" max="99" placeholder="?"></td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td class="fixed">5</td>
+              <td class="fixed" style="color:#a78bfa">V2</td>
+              <td><input type="number" id="s6_4_ss" min="0" max="9" placeholder="?"></td>
+              <td><input type="number" id="s6_4_sb" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s6_4_bt" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s6_4_kb" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s6_4_sk" min="0" max="99" placeholder="?"></td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td class="fixed">7</td>
+              <td class="fixed" style="color:#a78bfa">V1</td>
+              <td><input type="number" id="s6_5_ss" min="0" max="9" placeholder="?"></td>
+              <td><input type="number" id="s6_5_sb" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s6_5_bt" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s6_5_kb" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s6_5_sk" min="0" max="99" placeholder="?"></td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td class="fixed">8</td>
+              <td class="fixed" style="color:#f59e0b">KUYRUK→V1</td>
+              <td><input type="number" id="s6_6_ss" min="0" max="9" placeholder="?"></td>
+              <td><input type="number" id="s6_6_sb" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s6_6_bt" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s6_6_kb" min="0" max="99" placeholder="?"></td>
+              <td><input type="number" id="s6_6_sk" min="0" max="99" placeholder="?"></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="kontrolS6()">✅ Tabloyu Kontrol Et</button>
+          <button class="btn btn-outline" onclick="cozumGosterS6()">👁 Çözümü Göster</button>
+          <button class="btn btn-outline" onclick="sifirlaS6()">🔄 Sıfırla</button>
+        </div>
+        <div class="score-box" id="s6-score"></div>
+      </div>
+
+      <!-- PERFORMANS S6 -->
+      <div class="card">
+        <div class="card-title" style="display:flex;align-items:center;justify-content:space-between;">
+          <span>Performans Ölçütleri — Kendin Hesapla</span>
+          <button class="ipucu-btn" onclick="toggleIpucu('s6-perf-ipucu')">💡 İpucu</button>
+        </div>
+        <div class="ipucu-box" id="s6-perf-ipucu">
+          <strong>Ort. Kuyruk:</strong> (0+0+1+0+0+1) ÷ 6<br>
+          <strong>Ort. Sistem:</strong> (4+3+4+4+2+5) ÷ 6<br>
+          <strong>Maks. Kuyruk:</strong> Bekleme sürelerinin en büyüğü<br>
+          <strong>Kuyrukta bekleyen:</strong> Bekleme süresi &gt; 0 olan müşteri sayısı
+        </div>
+        <div style="margin-top:12px;">
+          <div class="perf-input-row">
+            <div class="perf-label">Ortalama kuyrukta bekleme süresi</div>
+            <input type="number" id="s6p_ortKuyruk" step="0.01" placeholder="?">
+            <div class="perf-unit">dk</div>
+          </div>
+          <div class="perf-input-row">
+            <div class="perf-label">Ortalama sistemde kalma süresi</div>
+            <input type="number" id="s6p_ortSistem" step="0.01" placeholder="?">
+            <div class="perf-unit">dk</div>
+          </div>
+          <div class="perf-input-row">
+            <div class="perf-label">Maksimum kuyruk bekleme süresi</div>
+            <input type="number" id="s6p_maxKuyruk" step="0.01" placeholder="?">
+            <div class="perf-unit">dk</div>
+          </div>
+          <div class="perf-input-row">
+            <div class="perf-label">Kuyrukta bekleyen müşteri sayısı</div>
+            <input type="number" id="s6p_kuyrukMusteri" step="1" placeholder="?">
+            <div class="perf-unit">kişi</div>
+          </div>
+        </div>
+        <div style="margin-top:14px;display:flex;gap:10px;">
+          <button class="btn btn-primary" onclick="kontrolS6Perf()">✅ Kontrol Et</button>
+          <button class="btn btn-outline" onclick="cozumGosterS6Perf()">👁 Cevapları Göster</button>
+        </div>
+        <div class="score-box" id="s6-perf-score"></div>
+      </div>
+
+      <div class="highlight yellow" style="margin-bottom:20px;">
+        Sistem yorumu: 2 vezne olmasına rağmen servis süreleri uzun olduğunda kuyruk oluşmaktadır. Yoğun dönemlerde 3. vezne açılması düşünülebilir.
+      </div>
+    </div>
+
+    <!-- ── NOTLARIM ── -->
+    <div class="page" id="page-notlar">
+      <div class="card">
+        <div class="card-title">📝 Notlarım</div>
+        <h2>Kişisel Çalışma Notları</h2>
+        <p style="margin-bottom:16px;">Notların tarayıcıda otomatik kaydedilir. Sayfayı kapatsak bile kaybolmaz.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div class="card" id="not-s1">
+          <div class="card-title" style="margin-bottom:8px;">Soru 1 — Benzetim Nedir?</div>
+          <textarea class="not-alan" data-key="not_s1" placeholder="Buraya notlarını yaz..."></textarea>
+          <div class="not-kayit-info">Otomatik kaydediliyor...</div>
+        </div>
+        <div class="card" id="not-s2">
+          <div class="card-title" style="margin-bottom:8px;">Soru 2 — Kesikli / Sürekli</div>
+          <textarea class="not-alan" data-key="not_s2" placeholder="Buraya notlarını yaz..."></textarea>
+          <div class="not-kayit-info">Otomatik kaydediliyor...</div>
+        </div>
+        <div class="card" id="not-s3">
+          <div class="card-title" style="margin-bottom:8px;">Soru 3 — Fenerbahçe</div>
+          <textarea class="not-alan" data-key="not_s3" placeholder="Buraya notlarını yaz..."></textarea>
+          <div class="not-kayit-info">Otomatik kaydediliyor...</div>
+        </div>
+        <div class="card" id="not-s4">
+          <div class="card-title" style="margin-bottom:8px;">Soru 4 — Çift Zar</div>
+          <textarea class="not-alan" data-key="not_s4" placeholder="Buraya notlarını yaz..."></textarea>
+          <div class="not-kayit-info">Otomatik kaydediliyor...</div>
+        </div>
+        <div class="card" id="not-s5">
+          <div class="card-title" style="margin-bottom:8px;">Soru 5 — G/G/1 Kuyruk</div>
+          <textarea class="not-alan" data-key="not_s5" placeholder="Buraya notlarını yaz..."></textarea>
+          <div class="not-kayit-info">Otomatik kaydediliyor...</div>
+        </div>
+        <div class="card" id="not-s6">
+          <div class="card-title" style="margin-bottom:8px;">Soru 6 — G/G/2 Kuyruk</div>
+          <textarea class="not-alan" data-key="not_s6" placeholder="Buraya notlarını yaz..."></textarea>
+          <div class="not-kayit-info">Otomatik kaydediliyor...</div>
+        </div>
+      </div>
+      <div style="margin-top:8px;display:flex;gap:10px;">
+        <button class="btn btn-outline" onclick="notlariTemizle()">🗑️ Tüm Notları Temizle</button>
+      </div>
+    </div>
+
+    <!-- ── KISAYOLLAR ── -->
+    <div class="page" id="page-kisayollar">
+      <div class="card">
+        <div class="card-title">⌨️ Klavye Kısayolları</div>
+        <h2>Hızlı Gezinme</h2>
+        <table style="margin-top:16px;">
+          <thead><tr><th>Kısayol</th><th>Eylem</th></tr></thead>
+          <tbody>
+            <tr><td><kbd>←</kbd> / <kbd>→</kbd></td><td>Önceki / Sonraki soru</td></tr>
+            <tr><td><kbd>H</kbd></td><td>Ana sayfa</td></tr>
+            <tr><td><kbd>Q</kbd></td><td>Quiz moduna git</td></tr>
+            <tr><td><kbd>N</kbd></td><td>Notlarıma git</td></tr>
+            <tr><td><kbd>T</kbd></td><td>Tema değiştir (Açık / Koyu)</td></tr>
+            <tr><td><kbd>1</kbd> – <kbd>6</kbd></td><td>Doğrudan o numaralı soruya git</td></tr>
+            <tr><td><kbd>Enter</kbd></td><td>Quiz'de cevapla / sonraki soruya geç</td></tr>
+            <tr><td><kbd>A</kbd> <kbd>B</kbd> <kbd>C</kbd> <kbd>D</kbd></td><td>Quiz'de seçenek seç</td></tr>
+            <tr><td><kbd>?</kbd></td><td>Bu sayfayı aç</td></tr>
+            <tr><td><kbd>Esc</kbd></td><td>Ana sayfaya dön</td></tr>
+          </tbody>
+        </table>
+        <div class="highlight" style="margin-top:16px;">
+          Kısayollar metin kutusuna yazarken devre dışı kalır.
+        </div>
+        <button class="btn btn-primary" style="margin-top:16px;" onclick="showPageById('home')">← Geri Dön</button>
+      </div>
+    </div>
+
+    <!-- ── QUIZ MODU ── -->
+    <div class="page" id="page-quiz">
+      <div class="card" id="quiz-baslik">
+        <div class="card-title">Quiz Modu</div>
+        <h2>Kendini Test Et</h2>
+        <p style="margin-bottom:16px;">Tüm konulardan karışık sorular. Her soru için 1 puan. Süre bitince quiz otomatik tamamlanır.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+          <button class="btn btn-primary" id="quiz-baslat-btn" onclick="quizBaslat()">▶ Quizi Başlat</button>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:13px;color:#64748b;">Süre:</span>
+            <select id="quiz-sure" style="background:#252840;border:1px solid #3d4166;border-radius:6px;color:#e2e8f0;padding:6px 10px;font-size:13px;outline:none;">
+              <option value="300">5 dakika</option>
+              <option value="600" selected>10 dakika</option>
+              <option value="900">15 dakika</option>
+              <option value="0">Süresiz</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Aktif Quiz Alanı -->
+      <div id="quiz-alan" style="display:none;">
+        <!-- Progress Bar -->
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
+          <div style="flex:1;background:#252840;border-radius:99px;height:8px;overflow:hidden;">
+            <div id="quiz-progress-bar" style="height:100%;background:linear-gradient(90deg,#4f46e5,#7c3aed);border-radius:99px;transition:width 0.3s;width:0%"></div>
+          </div>
+          <div style="font-size:13px;color:#94a3b8;white-space:nowrap;">
+            <span id="quiz-q-no">1</span> / <span id="quiz-q-total">0</span>
+          </div>
+          <div id="quiz-timer" style="font-size:15px;font-weight:700;color:#a78bfa;min-width:48px;text-align:right;">10:00</div>
+        </div>
+
+        <!-- Soru Kartı -->
+        <div class="card" id="quiz-soru-kart">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+            <span id="quiz-konu-badge" style="font-size:11px;font-weight:700;background:#252840;border:1px solid #3d4166;border-radius:20px;padding:4px 12px;color:#a78bfa;letter-spacing:0.5px;text-transform:uppercase;"></span>
+            <span id="quiz-tip-badge" style="font-size:11px;color:#64748b;"></span>
+          </div>
+          <h2 id="quiz-soru-metin" style="font-size:16px;line-height:1.6;margin-bottom:18px;"></h2>
+
+          <!-- Çoktan Seçmeli -->
+          <div id="quiz-secenekler" style="display:none;">
+            <div id="opt-A" class="quiz-opt" onclick="secenekSec('A')"></div>
+            <div id="opt-B" class="quiz-opt" onclick="secenekSec('B')"></div>
+            <div id="opt-C" class="quiz-opt" onclick="secenekSec('C')"></div>
+            <div id="opt-D" class="quiz-opt" onclick="secenekSec('D')"></div>
+          </div>
+
+          <!-- Boşluk Doldur -->
+          <div id="quiz-bosluk" style="display:none;">
+            <input id="quiz-bosluk-input" type="text" placeholder="Cevabınızı yazın..."
+              style="width:100%;background:#0d1117;border:1px solid #3d4166;border-radius:8px;color:#e2e8f0;font-size:15px;padding:12px 14px;outline:none;"
+              onkeydown="if(event.key==='Enter') quizCevapla()">
+          </div>
+
+          <!-- Geri bildirim -->
+          <div id="quiz-feedback" style="display:none;margin-top:14px;padding:12px 16px;border-radius:8px;font-size:13px;font-weight:600;"></div>
+
+          <div style="margin-top:18px;display:flex;gap:10px;">
+            <button class="btn btn-primary" id="quiz-cevapla-btn" onclick="quizCevapla()">Cevapla</button>
+            <button class="btn btn-outline" id="quiz-sonraki-btn" onclick="quizSonraki()" style="display:none;">Sonraki Soru →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sonuç Ekranı -->
+      <div id="quiz-sonuc" style="display:none;">
+        <div class="card" style="text-align:center;">
+          <div id="quiz-sonuc-emoji" style="font-size:56px;margin-bottom:12px;"></div>
+          <h2 id="quiz-sonuc-baslik" style="font-size:24px;margin-bottom:8px;"></h2>
+          <div id="quiz-sonuc-puan" style="font-size:48px;font-weight:800;color:#a78bfa;margin:12px 0;"></div>
+          <p id="quiz-sonuc-mesaj" style="color:#64748b;font-size:14px;margin-bottom:20px;"></p>
+          <div id="quiz-sonuc-detay" style="background:#0d1117;border-radius:10px;padding:16px;margin-bottom:20px;text-align:left;font-size:13px;line-height:2;"></div>
+          <button class="btn btn-primary" onclick="quizTekrar()" style="margin-right:10px;">🔄 Tekrar Dene</button>
+          <button class="btn btn-outline" onclick="showPageById('home')">Ana Sayfa</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<script>
+  // ══════════════════════════════════════════════
+  // NOTLAR — localStorage
+  // ══════════════════════════════════════════════
+  function notlariYukle() {
+    document.querySelectorAll('.not-alan').forEach(ta => {
+      const key = ta.dataset.key;
+      ta.value = localStorage.getItem(key) || '';
+      let timer;
+      ta.addEventListener('input', () => {
+        const info = ta.closest('.card').querySelector('.not-kayit-info');
+        info.textContent = 'Kaydediliyor...';
+        info.classList.remove('kaydedildi');
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          localStorage.setItem(key, ta.value);
+          info.textContent = '✓ Kaydedildi';
+          info.classList.add('kaydedildi');
+          setTimeout(() => { info.textContent = 'Otomatik kaydediliyor...'; info.classList.remove('kaydedildi'); }, 2000);
+        }, 600);
+      });
+    });
+  }
+
+  function notlariTemizle() {
+    if (!confirm('Tüm notlar silinecek. Emin misin?')) return;
+    document.querySelectorAll('.not-alan').forEach(ta => {
+      localStorage.removeItem(ta.dataset.key);
+      ta.value = '';
+    });
+  }
+
+  // ══════════════════════════════════════════════
+  // TEMA
+  // ══════════════════════════════════════════════
+  let acikTema = false;
+  function temaDegistir() {
+    acikTema = !acikTema;
+    document.body.classList.toggle('light', acikTema);
+    document.getElementById('tema-btn').textContent = acikTema ? '🌙 Koyu Tema' : '☀️ Açık Tema';
+    localStorage.setItem('tema', acikTema ? 'light' : 'dark');
+  }
+
+  // ══════════════════════════════════════════════
+  // YAZDIR
+  // ══════════════════════════════════════════════
+  function sayfaYazdir() { window.print(); }
+
+  // ══════════════════════════════════════════════
+  // KLAVYE KISAYOLLARI
+  // ══════════════════════════════════════════════
+  const SAYFA_SIRASI = ['home','s1','s2','s3','s4','s5','s6','quiz','notlar'];
+  let mevcutSayfa = 'home';
+
+  function aktifSayfaAl() {
+    const aktif = document.querySelector('.page.active');
+    return aktif ? aktif.id.replace('page-','') : 'home';
+  }
+
+  document.addEventListener('keydown', e => {
+    const hedef = e.target.tagName;
+    const yaziyoruz = ['INPUT','TEXTAREA','SELECT'].includes(hedef);
+
+    // Quiz modunda özel kısayollar
+    const quizAktif = document.getElementById('page-quiz').classList.contains('active')
+                   && document.getElementById('quiz-alan').style.display !== 'none';
+
+    if (quizAktif && !yaziyoruz) {
+      if (['a','b','c','d'].includes(e.key.toLowerCase())) {
+        secenekSec(e.key.toUpperCase()); return;
+      }
+      if (e.key === 'Enter') {
+        const sonraki = document.getElementById('quiz-sonraki-btn');
+        if (sonraki.style.display !== 'none') quizSonraki();
+        else quizCevapla();
+        return;
+      }
+    }
+
+    if (yaziyoruz) return; // metin kutusundayken başka kısayol çalışmasın
+
+    switch(e.key) {
+      case 'ArrowRight': case 'ArrowDown': {
+        const simdiki = aktifSayfaAl();
+        const idx = SAYFA_SIRASI.indexOf(simdiki);
+        if (idx < SAYFA_SIRASI.length - 1) showPageById(SAYFA_SIRASI[idx+1]);
+        break;
+      }
+      case 'ArrowLeft': case 'ArrowUp': {
+        const simdiki = aktifSayfaAl();
+        const idx = SAYFA_SIRASI.indexOf(simdiki);
+        if (idx > 0) showPageById(SAYFA_SIRASI[idx-1]);
+        break;
+      }
+      case '1': showPageById('s1'); break;
+      case '2': showPageById('s2'); break;
+      case '3': showPageById('s3'); break;
+      case '4': showPageById('s4'); break;
+      case '5': showPageById('s5'); break;
+      case '6': showPageById('s6'); break;
+      case 'h': case 'H': showPageById('home'); break;
+      case 'q': case 'Q': showPageById('quiz'); break;
+      case 'n': case 'N': showPageById('notlar'); break;
+      case 't': case 'T': temaDegistir(); break;
+      case '?': showPageById('kisayollar'); break;
+      case 'Escape': showPageById('home'); break;
+    }
+  });
+
+  // ══════════════════════════════════════════════
+  // İLERLEME TAKİBİ & ROZETLER
+  // ══════════════════════════════════════════════
+  const ROZETLER = [
+    { id:'ilk_adim',   icon:'🌱', ad:'İlk Adım',      aciklama:'İlk soruyu ziyaret et',        kosul: s => s.ziyaret >= 1 },
+    { id:'merakli',    icon:'🔍', ad:'Meraklı',        aciklama:'Tüm soruları ziyaret et',      kosul: s => s.ziyaret >= 6 },
+    { id:'quiz_girdi', icon:'🎯', ad:'Quiz Girdi',     aciklama:'İlk quizi tamamla',            kosul: s => s.quizSayisi >= 1 },
+    { id:'yuzde_60',   icon:'📚', ad:'Öğrenci',        aciklama:'Quiz\'de %60 veya üstü al',    kosul: s => s.enYuksekPuan >= 60 },
+    { id:'yuzde_80',   icon:'⭐', ad:'Başarılı',       aciklama:'Quiz\'de %80 veya üstü al',    kosul: s => s.enYuksekPuan >= 80 },
+    { id:'mukemmel',   icon:'🏆', ad:'Mükemmel',       aciklama:'Quiz\'de %100 al',             kosul: s => s.enYuksekPuan >= 100 },
+    { id:'tablocu',    icon:'📊', ad:'Tablocu',        aciklama:'5 kez tablo kontrol et',       kosul: s => s.tabloKontrol >= 5 },
+    { id:'azimli',     icon:'💪', ad:'Azimli',         aciklama:'Quiz\'i 3 kez tamamla',        kosul: s => s.quizSayisi >= 3 },
+  ];
+
+  function istatGetir() {
+    return JSON.parse(localStorage.getItem('istat') || '{}');
+  }
+
+  function istatKaydet(data) {
+    localStorage.setItem('istat', JSON.stringify(data));
+  }
+
+  function istatGuncelle(alan, deger) {
+    const s = istatGetir();
+    if (alan === 'ziyaret_ekle') {
+      s.ziyaretSorular = s.ziyaretSorular || {};
+      s.ziyaretSorular[deger] = true;
+      s.ziyaret = Object.keys(s.ziyaretSorular).length;
+    } else if (alan === 'quiz_bitti') {
+      s.quizSayisi = (s.quizSayisi || 0) + 1;
+      s.enYuksekPuan = Math.max(s.enYuksekPuan || 0, deger);
+    } else if (alan === 'tablo_kontrol') {
+      s.tabloKontrol = (s.tabloKontrol || 0) + 1;
+    }
+    istatKaydet(s);
+    istatPanelGuncelle();
+    rozetleriKontrolEt(s);
+  }
+
+  function istatPanelGuncelle() {
+    const s = istatGetir();
+    const ziyaret = s.ziyaret || 0;
+    const enYuksek = s.enYuksekPuan || 0;
+    const quizSayisi = s.quizSayisi || 0;
+
+    document.getElementById('ik-sorular-sayi').textContent = `${ziyaret}/6`;
+    document.getElementById('ik-sorular-bar').style.width = `${(ziyaret/6)*100}%`;
+
+    document.getElementById('ik-quiz-sayi').textContent = quizSayisi > 0 ? `%${enYuksek}` : '—';
+    document.getElementById('ik-quiz-bar').style.width = `${enYuksek}%`;
+
+    document.getElementById('ik-streak-sayi').textContent = quizSayisi;
+    document.getElementById('ik-streak-bar').style.width = `${Math.min(quizSayisi*10, 100)}%`;
+
+    // En son kazanılan rozeti göster
+    const kazanilanlar = ROZETLER.filter(r => s[`rozet_${r.id}`]);
+    if (kazanilanlar.length > 0) {
+      const son = kazanilanlar[kazanilanlar.length - 1];
+      document.getElementById('ik-rozet-icon').textContent = son.icon;
+      document.getElementById('ik-rozet-ad').textContent = son.ad;
+    }
+
+    // Rozet paneli
+    const panel = document.getElementById('rozet-panel');
+    panel.innerHTML = '';
+    ROZETLER.forEach(r => {
+      const kazanildi = !!s[`rozet_${r.id}`];
+      const div = document.createElement('div');
+      div.className = 'rozet' + (kazanildi ? ' kazanildi' : '');
+      div.title = r.aciklama;
+      div.innerHTML = `<span class="rozet-icon">${r.icon}</span><span>${r.ad}</span>`;
+      panel.appendChild(div);
+    });
+
+    // Sayfa başlığı
+    document.title = `Benzetim Çalışma | ${ziyaret}/6 Soru`;
+  }
+
+  function rozetleriKontrolEt(s) {
+    let yeniRozet = false;
+    ROZETLER.forEach(r => {
+      if (!s[`rozet_${r.id}`] && r.kosul(s)) {
+        s[`rozet_${r.id}`] = true;
+        yeniRozet = r;
+      }
+    });
+    if (yeniRozet) {
+      istatKaydet(s);
+      rozetBildirim(yeniRozet);
+      istatPanelGuncelle();
+    }
+  }
+
+  function rozetBildirim(r) {
+    const el = document.createElement('div');
+    el.style.cssText = `
+      position:fixed; bottom:24px; right:24px; z-index:9999;
+      background:#1e1b4b; border:2px solid #7c3aed; border-radius:14px;
+      padding:14px 20px; display:flex; align-items:center; gap:12px;
+      font-size:14px; color:#c4b5fd; box-shadow:0 8px 32px rgba(124,58,237,0.4);
+      animation:fadeIn 0.3s ease; max-width:280px;
+    `;
+    el.innerHTML = `<span style="font-size:28px">${r.icon}</span>
+      <div><div style="font-weight:700;color:#fff;">Rozet Kazandın!</div>
+      <div style="color:#a78bfa">${r.ad}</div>
+      <div style="font-size:11px;color:#64748b;margin-top:2px">${r.aciklama}</div></div>`;
+    document.body.appendChild(el);
+    setTimeout(() => { el.style.transition='opacity 0.5s'; el.style.opacity='0'; setTimeout(()=>el.remove(),500); }, 3500);
+  }
+
+  // ══════════════════════════════════════════════
+  // BAŞLANGICTA YÜKLE
+  // ══════════════════════════════════════════════
+  window.addEventListener('DOMContentLoaded', () => {
+    notlariYukle();
+    istatPanelGuncelle();
+    if (localStorage.getItem('tema') === 'light') temaDegistir();
+    const kayitliHane = localStorage.getItem('son_hane');
+    if (kayitliHane !== null) {
+      document.getElementById('last-digit').value = kayitliHane;
+      updateDigit();
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('last-digit').addEventListener('input', () => {
+      localStorage.setItem('son_hane', document.getElementById('last-digit').value);
+    });
+  });
+
+  // ══════════════════════════════════════════════
+  // SAYFA GEZİNME
+  // ══════════════════════════════════════════════
+  const pageTitles = {
+    home:'Ana Sayfa', s1:'Soru 1 — Benzetim Nedir?',
+    s2:'Soru 2 — Kesikli / Sürekli', s3:'Soru 3 — Fenerbahçe',
+    s4:'Soru 4 — Çift Zar', s5:'Soru 5 — G/G/1 Kuyruk',
+    s6:'Soru 6 — G/G/2 Kuyruk',
+    quiz:'🎯 Quiz Modu',
+    notlar:'📝 Notlarım',
+    kisayollar:'⌨️ Klavye Kısayolları'
+  };
+
+  function showPage(id, btn) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('page-' + id).classList.add('active');
+    if (btn) btn.classList.add('active');
+    document.getElementById('page-title').textContent = pageTitles[id] || '';
+    if (['s1','s2','s3','s4','s5','s6'].includes(id)) istatGuncelle('ziyaret_ekle', id);
+  }
+
+  function showPageById(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => {
+      if ((b.getAttribute('onclick')||'').includes("'"+id+"'")) b.classList.add('active');
+      else b.classList.remove('active');
+    });
+    document.getElementById('page-' + id).classList.add('active');
+    document.getElementById('page-title').textContent = pageTitles[id] || '';
+    if (['s1','s2','s3','s4','s5','s6'].includes(id)) istatGuncelle('ziyaret_ekle', id);
+  }
+
+  // ══════════════════════════════════════════════
+  // SON HANE VERİ SETLERİ (0–9)
+  // Her digit için: rsVaris[0]=null(M1), [1..5]=M2..M6
+  //                 rsServis[0..5]=M1..M6
+  // ══════════════════════════════════════════════
+  const S5_DATA = {
+    0: { rsVaris:[null,15,52,71,88,34], rsServis:[22,65,48,11,82,37] },
+    1: { rsVaris:[null,08,42,66,91,27], rsServis:[25,18,26,12,34,76] },
+    2: { rsVaris:[null,25,55,80,95,18], rsServis:[15,72,43,88,31,67] },
+    3: { rsVaris:[null,10,38,75,92,45], rsServis:[35,85,22,54,68,12] },
+    4: { rsVaris:[null,62,28,83,47,16], rsServis:[77,42,91,28,15,58] },
+    5: { rsVaris:[null,05,65,30,88,72], rsServis:[53,19,76,84,40,27] },
+    6: { rsVaris:[null,33,77,21,56,94], rsServis:[60,82,35,17,92,48] },
+    7: { rsVaris:[null,48,12,68,24,81], rsServis:[28,74,51,86,03,92] },
+    8: { rsVaris:[null,72,40,15,93,29], rsServis:[84,32,67,21,75,45] },
+    9: { rsVaris:[null,19,87,53,36,64], rsServis:[44,09,78,59,23,88] },
+  };
+
+  const S6_DATA = {
+    0: { rsVaris:[null,18,42,75,55,08], rsServis:[72,45,88,31,67,84] },
+    1: { rsVaris:[null,22,35,60,48,10], rsServis:[88,72,55,81,33,90] },
+    2: { rsVaris:[null,55,80,25,14,68], rsServis:[42,91,28,76,15,58] },
+    3: { rsVaris:[null,30,65,88,42,17], rsServis:[85,22,54,12,68,37] },
+    4: { rsVaris:[null,72,15,48,93,36], rsServis:[33,82,61,44,90,17] },
+    5: { rsVaris:[null,08,52,78,34,61], rsServis:[91,47,24,68,83,35] },
+    6: { rsVaris:[null,45,20,66,82,38], rsServis:[55,88,14,72,39,95] },
+    7: { rsVaris:[null,63,35,14,87,52], rsServis:[28,74,51,86,42,65] },
+    8: { rsVaris:[null,28,71,44,16,90], rsServis:[62,35,84,19,78,47] },
+    9: { rsVaris:[null,50,82,27,65,33], rsServis:[16,88,43,72,54,91] },
+  };
+
+  // ══════════════════════════════════════════════
+  // DAĞILIM DÖNÜŞTÜRME FONKSİYONLARI
+  // ══════════════════════════════════════════════
+  function varis5(rs)   { return rs<=19?1: rs<=59?2: rs<=89?3:4; }
+  function servis5(rs)  { return rs<=29?2: rs<=79?3:4; }
+  function varis6(rs)   { return rs<=29?1: rs<=69?2:3; }
+  function servis6(rs)  { return rs<=39?2: rs<=79?3:4; }
+
+  // ── G/G/1 Simülasyonu ──
+  function simQ5(data) {
+    const rows = [];
+    let prevBitis = 0, varısZamani = 0;
+    for (let i=0; i<6; i++) {
+      const varisArasi = i===0 ? null : varis5(data.rsVaris[i]);
+      if (i>0) varısZamani += varisArasi;
+      const ss  = servis5(data.rsServis[i]);
+      const sb  = Math.max(varısZamani, prevBitis);
+      const bt  = sb + ss;
+      const kb  = sb - varısZamani;
+      const sk  = bt - varısZamani;
+      rows.push({ varisArasi, varısZamani, ss, sb, bt, kb, sk });
+      prevBitis = bt;
+    }
+    return rows;
+  }
+
+  // ── G/G/2 Simülasyonu ──
+  function simQ6(data) {
+    const rows = [];
+    let v1=0, v2=0, varısZamani=0;
+    for (let i=0; i<6; i++) {
+      if (i>0) varısZamani += varis6(data.rsVaris[i]);
+      const ss  = servis6(data.rsServis[i]);
+      const minV = Math.min(v1, v2);
+      const sb  = Math.max(varısZamani, minV);
+      const bt  = sb + ss;
+      const kb  = sb - varısZamani;
+      const sk  = bt - varısZamani;
+      if (v1 <= v2) v1 = bt; else v2 = bt;
+      rows.push({ varısZamani, ss, sb, bt, kb, sk });
+    }
+    return rows;
+  }
+
+  // ── Performans hesabı ──
+  function perfQ5(rows) {
+    const kbArr = rows.map(r=>r.kb);
+    const ssArr = rows.map(r=>r.ss);
+    const skArr = rows.map(r=>r.sk);
+    const btArr = rows.map(r=>r.bt);
+    const vzArr = rows.map(r=>r.varısZamani);
+    // Vezne boşlukları
+    let bos = 0;
+    for (let i=1; i<rows.length; i++) {
+      const gap = rows[i].varısZamani - rows[i-1].bt;
+      if (gap > 0) bos += gap;
+    }
+    const topSim = btArr[btArr.length-1];
+    const topServis = ssArr.reduce((a,b)=>a+b,0);
+    return {
+      ortKuyruk: +(kbArr.reduce((a,b)=>a+b,0)/6).toFixed(2),
+      ortSistem: +(skArr.reduce((a,b)=>a+b,0)/6).toFixed(2),
+      maxKuyruk: Math.max(...kbArr),
+      bosKalma: bos,
+      kullOran: +((topServis/topSim)*100).toFixed(1)
+    };
+  }
+
+  function perfQ6(rows) {
+    const kbArr = rows.map(r=>r.kb);
+    const skArr = rows.map(r=>r.sk);
+    return {
+      ortKuyruk: +(kbArr.reduce((a,b)=>a+b,0)/6).toFixed(2),
+      ortSistem: +(skArr.reduce((a,b)=>a+b,0)/6).toFixed(2),
+      maxKuyruk: Math.max(...kbArr),
+      kuyrukMusteri: kbArr.filter(k=>k>0).length
+    };
+  }
+
+  // ══════════════════════════════════════════════
+  // HANE GİRİŞİ → RS TABLOLARINI GÜNCELLE
+  // ══════════════════════════════════════════════
+  function updateDigit() {
+    const raw = document.getElementById('last-digit').value;
+    const val = raw !== '' ? parseInt(raw) : null;
+    const d = val !== null ? val : '—';
+    document.getElementById('digit-val').textContent = d;
+    document.getElementById('digit-badge').textContent =
+      val !== null ? `Son hane: ${d}` : 'Son hane girilmedi';
+
+    if (val === null) return;
+
+    // S5 RS güncelle
+    const d5 = S5_DATA[val];
+    const fmt = n => String(n).padStart(2,'0');
+    document.getElementById('s5rv1').textContent = fmt(d5.rsServis[0]);
+    for (let i=2; i<=6; i++) {
+      document.getElementById(`s5ra${i}`).textContent = fmt(d5.rsVaris[i-1]);
+      document.getElementById(`s5rv${i}`).textContent = fmt(d5.rsServis[i-1]);
+    }
+
+    // S6 RS güncelle
+    const d6 = S6_DATA[val];
+    document.getElementById('s6rv1').textContent = fmt(d6.rsServis[0]);
+    for (let i=2; i<=6; i++) {
+      document.getElementById(`s6ra${i}`).textContent = fmt(d6.rsVaris[i-1]);
+      document.getElementById(`s6rv${i}`).textContent = fmt(d6.rsServis[i-1]);
+    }
+
+    // Tabloları sıfırla (yeni soru, yeni başlangıç)
+    sifirlaS5(); sifirlaS6();
+  }
+
+  function toggleIpucu(id) {
+    document.getElementById(id).classList.toggle('show');
+  }
+
+  // ── Hücre yardımcıları ──
+  function checkCell(id, dogru) {
+    const el = document.getElementById(id);
+    if (!el) return 0;
+    el.classList.remove('correct-cell','wrong-cell');
+    if (el.value === '') return 0;
+    if (Math.abs(parseFloat(el.value) - dogru) < 0.05) { el.classList.add('correct-cell'); return 1; }
+    el.classList.add('wrong-cell'); return 0;
+  }
+  function setCell(id, val) {
+    const el = document.getElementById(id);
+    if (el) { el.value = val; el.classList.remove('wrong-cell'); el.classList.add('correct-cell'); }
+  }
+  function clearCell(id) {
+    const el = document.getElementById(id);
+    if (el) { el.value=''; el.classList.remove('correct-cell','wrong-cell'); }
+  }
+  function showScore(boxId, dogru, toplam, detay) {
+    const box = document.getElementById(boxId);
+    const pct = Math.round((dogru/toplam)*100);
+    const renk = pct===100?'#22c55e': pct>=60?'#eab308':'#ef4444';
+    box.innerHTML = `<div class="score-num" style="color:${renk}">${dogru}/${toplam}</div>
+      <div style="color:${renk};font-size:14px;margin-top:4px;">${pct===100?'🎉 Mükemmel!':pct>=60?'👍 İyi gidiyorsun!':'❌ Tekrar dene'}</div>
+      <div class="score-detail">${detay}</div>`;
+    box.classList.add('show');
+  }
+
+  // Aktif digit ve simülasyon sonuçlarını al
+  function getDigit() {
+    const v = document.getElementById('last-digit').value;
+    return v !== '' ? parseInt(v) : 1; // varsayılan digit=1 (orijinal soru)
+  }
+
+  // ══════════════════════════════════════════════
+  // SORU 5
+  // ══════════════════════════════════════════════
+  function kontrolS5() {
+    const rows = simQ5(S5_DATA[getDigit()]);
+    let dogru=0, toplam=0;
+    // M1: ss, sb, bt, kb, sk
+    toplam+=5;
+    dogru += checkCell('s5_1_ss', rows[0].ss);
+    dogru += checkCell('s5_1_sb', rows[0].sb);
+    dogru += checkCell('s5_1_bt', rows[0].bt);
+    dogru += checkCell('s5_1_kb', rows[0].kb);
+    dogru += checkCell('s5_1_sk', rows[0].sk);
+    for (let i=1; i<6; i++) {
+      const r = rows[i]; const n = i+1;
+      toplam+=7;
+      dogru += checkCell(`s5_${n}_va`, r.varisArasi);
+      dogru += checkCell(`s5_${n}_vz`, r.varısZamani);
+      dogru += checkCell(`s5_${n}_ss`, r.ss);
+      dogru += checkCell(`s5_${n}_sb`, r.sb);
+      dogru += checkCell(`s5_${n}_bt`, r.bt);
+      dogru += checkCell(`s5_${n}_kb`, r.kb);
+      dogru += checkCell(`s5_${n}_sk`, r.sk);
+    }
+    showScore('s5-score', dogru, toplam, 'Yeşil = doğru ✓ &nbsp; Kırmızı = yanlış ✗ &nbsp; Yanlışları düzelterek tekrar kontrol et.');
+    istatGuncelle('tablo_kontrol');
+  }
+
+  function cozumGosterS5() {
+    const rows = simQ5(S5_DATA[getDigit()]);
+    const r0 = rows[0];
+    setCell('s5_1_ss',r0.ss); setCell('s5_1_sb',r0.sb); setCell('s5_1_bt',r0.bt); setCell('s5_1_kb',r0.kb); setCell('s5_1_sk',r0.sk);
+    for (let i=1; i<6; i++) {
+      const r=rows[i]; const n=i+1;
+      setCell(`s5_${n}_va`,r.varisArasi); setCell(`s5_${n}_vz`,r.varısZamani);
+      setCell(`s5_${n}_ss`,r.ss); setCell(`s5_${n}_sb`,r.sb);
+      setCell(`s5_${n}_bt`,r.bt); setCell(`s5_${n}_kb`,r.kb); setCell(`s5_${n}_sk`,r.sk);
+    }
+    const box=document.getElementById('s5-score');
+    box.innerHTML='<div style="color:#a78bfa;font-weight:600;">👁 Çözüm gösterildi. İncele, sonra sıfırla ve kendin doldur!</div>';
+    box.classList.add('show');
+  }
+
+  function sifirlaS5() {
+    ['ss','sb','bt','kb','sk'].forEach(k => clearCell(`s5_1_${k}`));
+    for (let i=2; i<=6; i++) ['va','vz','ss','sb','bt','kb','sk'].forEach(k => clearCell(`s5_${i}_${k}`));
+    document.getElementById('s5-score').classList.remove('show');
+  }
+
+  function kontrolS5Perf() {
+    const rows = simQ5(S5_DATA[getDigit()]);
+    const p = perfQ5(rows);
+    let dogru=0, toplam=5;
+    dogru += checkCell('s5p_ortKuyruk', p.ortKuyruk);
+    dogru += checkCell('s5p_ortSistem', p.ortSistem);
+    dogru += checkCell('s5p_maxKuyruk', p.maxKuyruk);
+    dogru += checkCell('s5p_bosKalma',  p.bosKalma);
+    dogru += checkCell('s5p_kullOran',  p.kullOran);
+    showScore('s5-perf-score', dogru, toplam,
+      `Ort.Kuyruk=${p.ortKuyruk} | Ort.Sistem=${p.ortSistem} | Max.Kuyruk=${p.maxKuyruk} | Boş=${p.bosKalma} dk | Kullanım=%${p.kullOran}`);
+  }
+
+  function cozumGosterS5Perf() {
+    const rows = simQ5(S5_DATA[getDigit()]);
+    const p = perfQ5(rows);
+    [['s5p_ortKuyruk',p.ortKuyruk],['s5p_ortSistem',p.ortSistem],
+     ['s5p_maxKuyruk',p.maxKuyruk],['s5p_bosKalma',p.bosKalma],['s5p_kullOran',p.kullOran]]
+    .forEach(([id,v]) => setCell(id,v));
+    const box=document.getElementById('s5-perf-score');
+    box.innerHTML='<div style="color:#a78bfa;font-weight:600;">👁 Cevaplar gösterildi.</div>';
+    box.classList.add('show');
+  }
+
+  // ══════════════════════════════════════════════
+  // SORU 6
+  // ══════════════════════════════════════════════
+  function kontrolS6() {
+    const rows = simQ6(S6_DATA[getDigit()]);
+    let dogru=0, toplam=0;
+    for (let i=0; i<6; i++) {
+      const r=rows[i]; const n=i+1; toplam+=5;
+      dogru += checkCell(`s6_${n}_ss`, r.ss);
+      dogru += checkCell(`s6_${n}_sb`, r.sb);
+      dogru += checkCell(`s6_${n}_bt`, r.bt);
+      dogru += checkCell(`s6_${n}_kb`, r.kb);
+      dogru += checkCell(`s6_${n}_sk`, r.sk);
+    }
+    showScore('s6-score', dogru, toplam, 'Yeşil = doğru ✓ &nbsp; Kırmızı = yanlış ✗');
+    istatGuncelle('tablo_kontrol');
+  }
+
+  function cozumGosterS6() {
+    const rows = simQ6(S6_DATA[getDigit()]);
+    rows.forEach((r,i) => {
+      const n=i+1;
+      setCell(`s6_${n}_ss`,r.ss); setCell(`s6_${n}_sb`,r.sb);
+      setCell(`s6_${n}_bt`,r.bt); setCell(`s6_${n}_kb`,r.kb); setCell(`s6_${n}_sk`,r.sk);
+    });
+    const box=document.getElementById('s6-score');
+    box.innerHTML='<div style="color:#a78bfa;font-weight:600;">👁 Çözüm gösterildi.</div>';
+    box.classList.add('show');
+  }
+
+  function sifirlaS6() {
+    for (let i=1; i<=6; i++) ['ss','sb','bt','kb','sk'].forEach(k => clearCell(`s6_${i}_${k}`));
+    document.getElementById('s6-score').classList.remove('show');
+  }
+
+  function kontrolS6Perf() {
+    const rows = simQ6(S6_DATA[getDigit()]);
+    const p = perfQ6(rows);
+    let dogru=0, toplam=4;
+    dogru += checkCell('s6p_ortKuyruk',    p.ortKuyruk);
+    dogru += checkCell('s6p_ortSistem',    p.ortSistem);
+    dogru += checkCell('s6p_maxKuyruk',    p.maxKuyruk);
+    dogru += checkCell('s6p_kuyrukMusteri',p.kuyrukMusteri);
+    showScore('s6-perf-score', dogru, toplam,
+      `Ort.Kuyruk=${p.ortKuyruk} | Ort.Sistem=${p.ortSistem} | Max.Kuyruk=${p.maxKuyruk} | Kuyrukta=${p.kuyrukMusteri} kişi`);
+  }
+
+  // ══════════════════════════════════════════════
+  // QUIZ SORU BANKASI
+  // ══════════════════════════════════════════════
+  const QUIZ_SORULAR = [
+    // ── KONU 1: Benzetim Tanımı ──
+    { konu:'Soru 1 — Benzetim', tip:'coktan',
+      soru:'Benzetim (simülasyon) nedir?',
+      secenekler:{ A:'Gerçek sistemi tamamen yok eden bir yaklaşım', B:'Gerçek bir sistemin bilgisayar ortamında taklit edilmesidir', C:'Yalnızca sürekli sistemlere uygulanan matematiksel bir yöntemdir', D:'Sistemi olduğu gibi kopyalayıp farklı bir yerde kurmaktır' },
+      dogru:'B', aciklama:'Benzetim, gerçek sistemi değiştirmeden onun bilgisayarda taklit edilmesidir.' },
+
+    { konu:'Soru 1 — Benzetim', tip:'coktan',
+      soru:'Aşağıdakilerden hangisi benzetim kullanmak için geçerli bir neden DEĞİLDİR?',
+      secenekler:{ A:'Gerçek sistemin test edilmesi tehlikeli olduğunda', B:'Sistem henüz mevcut değilken', C:'Gerçek sistem her zaman kolayca denenebiliyorken', D:'Maliyet çok yüksek olduğunda' },
+      dogru:'C', aciklama:'Gerçek sistem kolay denelenebiliyorsa benzetim gerekmez. Diğerleri benzetimin kullanım gerekçeleridir.' },
+
+    { konu:'Soru 1 — Benzetim', tip:'bosluk',
+      soru:'Benzetimde belirsizliği temsil etmek için kullanılan sayılara ________ sayılar denir.',
+      dogru:'rassal', aciklama:'Stokastik (olasılıksal) benzetimlerde belirsizlik rastgele (rassal) sayılarla modellenir.' },
+
+    // ── KONU 2: Kesikli / Sürekli ──
+    { konu:'Soru 2 — Kesikli/Sürekli', tip:'coktan',
+      soru:'Kesikli olay benzetiminde sistem durumu ne zaman değişir?',
+      secenekler:{ A:'Her milisaniyede', B:'Yalnızca belirli olaylar gerçekleştiğinde', C:'Sabit zaman adımlarıyla (Δt)', D:'Hiçbir zaman değişmez' },
+      dogru:'B', aciklama:'Kesikli benzetimde durum yalnızca olaylarla değişir; olaylar arasında sistem sabittir.' },
+
+    { konu:'Soru 2 — Kesikli/Sürekli', tip:'coktan',
+      soru:'Aşağıdakilerden hangisi SÜREKLİ benzetime örnektir?',
+      secenekler:{ A:'Banka kuyruğu', B:'Çağrı merkezi simülasyonu', C:'Hava durumu tahmin modeli', D:'Üretim hattı simülasyonu' },
+      dogru:'C', aciklama:'Hava durumu modelinde sıcaklık, basınç gibi değişkenler sürekli değişir — diferansiyel denklemlerle modellenir.' },
+
+    { konu:'Soru 2 — Kesikli/Sürekli', tip:'coktan',
+      soru:'Kesikli benzetimde zaman nasıl ilerler?',
+      secenekler:{ A:'Küçük Δt adımlarıyla', B:'Her saniyede bir', C:'Olaydan olaya atlayarak', D:'Geriye doğru' },
+      dogru:'C', aciklama:'Kesikli benzetimde zaman gereksiz yere ilerlemez; bir sonraki olaya direkt atlar.' },
+
+    { konu:'Soru 2 — Kesikli/Sürekli', tip:'bosluk',
+      soru:'Kesikli ve sürekli benzetimin birlikte kullanıldığı sisteme ________ benzetim denir.',
+      dogru:'hibrit', aciklama:'Hibrit benzetim, her iki yaklaşımı aynı modelde kullanır.' },
+
+    // ── KONU 3: Python / Fenerbahçe ──
+    { konu:'Soru 3 — Fenerbahçe', tip:'coktan',
+      soru:'Fenerbahçe simülasyonunda "random.random()" ne üretir?',
+      secenekler:{ A:'1 ile 6 arasında tam sayı', B:'0 ile 1 arasında ondalıklı sayı', C:'0 ile 100 arasında tam sayı', D:'Her zaman 0.5 üretir' },
+      dogru:'B', aciklama:'random.random() 0 (dahil) ile 1 (hariç) arasında düzgün dağılımlı bir ondalıklı sayı üretir.' },
+
+    { konu:'Soru 3 — Fenerbahçe', tip:'coktan',
+      soru:'"olasilik -= 0.02" satırı ne yapar?',
+      secenekler:{ A:'Olasılığı her yıl %2 artırır', B:'Olasılığı her yıl 0.02 azaltır (%2)', C:'Olasılığı sıfırlar', D:'Döngüyü sonlandırır' },
+      dogru:'B', aciklama:'Her başarısız yılda olasılık 0.02 (yani %2) azalır.' },
+
+    { konu:'Soru 3 — Fenerbahçe', tip:'coktan',
+      soru:'Fenerbahçe simülasyonunda "while olasilik > 0" döngüsü ne zaman durur?',
+      secenekler:{ A:'Fenerbahçe şampiyon olduğunda', B:'50 yıl geçtiğinde', C:'Olasılık sıfırın altına düştüğünde veya şampiyonluk gerçekleştiğinde', D:'Kullanıcı durdurunca' },
+      dogru:'C', aciklama:'Döngü iki koşulda biter: şampiyonluk (return ile) veya olasılık ≤ 0.' },
+
+    // ── KONU 4: Çift Zar ──
+    { konu:'Soru 4 — Çift Zar', tip:'coktan',
+      soru:'"random.randint(1, 6)" neyi temsil eder?',
+      secenekler:{ A:'0 ile 6 arasında ondalıklı sayı', B:'1 ile 6 arasında rastgele tam sayı (zar atışı)', C:'Her zaman 3 döndürür', D:'6 boyutlu bir liste' },
+      dogru:'B', aciklama:'randint(1,6) bir zarı temsil eder: 1, 2, 3, 4, 5 veya 6 eşit olasılıkla gelir.' },
+
+    { konu:'Soru 4 — Çift Zar', tip:'bosluk',
+      soru:'İki zarın ikisinin de 6 gelme olasılığı 1/36 ≈ %2.78 olduğundan teorik beklenen deneme sayısı ________ dir.',
+      dogru:'36', aciklama:'Beklenen deneme = 1/P = 1/(1/36) = 36.' },
+
+    { konu:'Soru 4 — Çift Zar', tip:'coktan',
+      soru:'Çift zar simülasyonunda "while True" döngüsü neden kullanılır?',
+      secenekler:{ A:'Sonsuz çalışması için', B:'Çift 6 gelene kadar durdurulamaz şekilde çalışmak için', C:'Performansı artırmak için', D:'Hata ayıklamak için' },
+      dogru:'B', aciklama:'"while True" çift 6 gelene kadar döner; koşul sağlanınca "return" ile çıkılır.' },
+
+    // ── KONU 5: G/G/1 ──
+    { konu:'Soru 5 — G/G/1', tip:'coktan',
+      soru:'G/G/1 notasyonunda "1" neyi ifade eder?',
+      secenekler:{ A:'1 müşteri', B:'1 sunucu (vezne)', C:'1 dakika servis süresi', D:'1 kuyruk' },
+      dogru:'B', aciklama:'Kendall notasyonunda son hane sunucu sayısını gösterir. G/G/1 = 1 sunucu.' },
+
+    { konu:'Soru 5 — G/G/1', tip:'coktan',
+      soru:'G/G/1 kuyruk simülasyonunda "Servis Başlangıç" zamanı nasıl hesaplanır?',
+      secenekler:{ A:'Varış Zamanı + Servis Süresi', B:'max(Varış Zamanı, Önceki Servis Bitişi)', C:'Varış Zamanı − Kuyruk Bekleme', D:'Servis Bitişi − Servis Süresi' },
+      dogru:'B', aciklama:'Müşteri ya geldiğinde ya da vezne boşaldığında servise girer; hangisi daha geç ise o an.' },
+
+    { konu:'Soru 5 — G/G/1', tip:'coktan',
+      soru:'Bir müşterinin "Kuyrukta Bekleme Süresi" sıfırdan büyükse bu ne anlama gelir?',
+      secenekler:{ A:'Müşteri erken geldi', B:'Vezne müşteri geldiğinde doluydu, müşteri bekledi', C:'Servis süresi uzundu', D:'Vezne hiç çalışmadı' },
+      dogru:'B', aciklama:'Bekleme = Servis Başlangıç − Varış Zamanı. Eğer vezne doluysa servis başlangıcı varıştan geç olur.' },
+
+    { konu:'Soru 5 — G/G/1', tip:'bosluk',
+      soru:'Vezne kullanım oranı = (Toplam Servis Süresi / Toplam Simülasyon Süresi) × ________',
+      dogru:'100', aciklama:'Yüzde olarak ifade etmek için 100 ile çarpılır.' },
+
+    // ── KONU 6: G/G/2 ──
+    { konu:'Soru 6 — G/G/2', tip:'coktan',
+      soru:'G/G/2 sisteminde gelen müşteri ne zaman kuyrukta beklemek zorundadır?',
+      secenekler:{ A:'Her zaman bekler', B:'Hiçbir zaman beklemez', C:'Her iki vezne de doluysa', D:'Sadece 1. vezne doluysa' },
+      dogru:'C', aciklama:'İki vezneli sistemde ancak her ikisi de meşgulse kuyruk oluşur.' },
+
+    { konu:'Soru 6 — G/G/2', tip:'coktan',
+      soru:'G/G/2 de kuyruktan bekleyen müşteri hangi veznede servise girer?',
+      secenekler:{ A:'Her zaman V1\'de', B:'Her zaman V2\'de', C:'En erken boşalan veznede', D:'Rastgele seçilen veznede' },
+      dogru:'C', aciklama:'Müşteri en erken boşalacak veznede servise alınır (min bitiş zamanı).' },
+
+    { konu:'Soru 6 — G/G/2', tip:'coktan',
+      soru:'G/G/1 ve G/G/2 sistemleri arasındaki temel fark nedir?',
+      secenekler:{ A:'Dağılım türü farklıdır', B:'Sunucu (vezne) sayısı farklıdır', C:'Müşteri sayısı farklıdır', D:'Servis süresi farklıdır' },
+      dogru:'B', aciklama:'Kendall notasyonunda 3. hane sunucu sayısını gösterir: /1 vs /2.' },
+  ];
+
+  // ══════════════════════════════════════════════
+  // QUIZ MOTORU
+  // ══════════════════════════════════════════════
+  let quizSorular = [], quizIndex = 0, quizPuan = 0;
+  let quizSecilen = null, quizCevaplandi = false;
+  let quizSureLeft = 0, quizInterval = null, quizTimerInterval = null;
+  let quizYanlis = [], quizDogru = [];
+
+  function quizKaristir(arr) {
+    const a = [...arr]; for (let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a;
+  }
+
+  function quizBaslat() {
+    quizSorular = quizKaristir(QUIZ_SORULAR);
+    quizIndex = 0; quizPuan = 0; quizYanlis = []; quizDogru = [];
+    quizSureLeft = parseInt(document.getElementById('quiz-sure').value);
+
+    document.getElementById('quiz-baslik').style.display = 'none';
+    document.getElementById('quiz-alan').style.display = 'block';
+    document.getElementById('quiz-sonuc').style.display = 'none';
+    document.getElementById('quiz-q-total').textContent = quizSorular.length;
+
+    if (quizTimerInterval) clearInterval(quizTimerInterval);
+    if (quizSureLeft > 0) {
+      quizTimerGuncelle();
+      quizTimerInterval = setInterval(() => {
+        quizSureLeft--;
+        quizTimerGuncelle();
+        if (quizSureLeft <= 0) { clearInterval(quizTimerInterval); quizBitir(); }
+      }, 1000);
+    } else {
+      document.getElementById('quiz-timer').textContent = '∞';
+    }
+    quizSoruGoster();
+  }
+
+  function quizTimerGuncelle() {
+    const d = quizSureLeft;
+    const m = Math.floor(d/60).toString().padStart(2,'0');
+    const s = (d%60).toString().padStart(2,'0');
+    const el = document.getElementById('quiz-timer');
+    el.textContent = `${m}:${s}`;
+    el.style.color = d <= 30 ? '#ef4444' : '#a78bfa';
+  }
+
+  function quizSoruGoster() {
+    if (quizIndex >= quizSorular.length) { quizBitir(); return; }
+    const s = quizSorular[quizIndex];
+    quizSecilen = null; quizCevaplandi = false;
+
+    document.getElementById('quiz-q-no').textContent = quizIndex + 1;
+    document.getElementById('quiz-progress-bar').style.width = ((quizIndex/quizSorular.length)*100) + '%';
+    document.getElementById('quiz-konu-badge').textContent = s.konu;
+    document.getElementById('quiz-tip-badge').textContent = s.tip === 'coktan' ? 'Çoktan Seçmeli' : 'Boşluk Doldur';
+    document.getElementById('quiz-soru-metin').textContent = s.soru;
+    document.getElementById('quiz-feedback').style.display = 'none';
+    document.getElementById('quiz-cevapla-btn').style.display = 'inline-flex';
+    document.getElementById('quiz-sonraki-btn').style.display = 'none';
+
+    if (s.tip === 'coktan') {
+      document.getElementById('quiz-secenekler').style.display = 'block';
+      document.getElementById('quiz-bosluk').style.display = 'none';
+      ['A','B','C','D'].forEach(k => {
+        const el = document.getElementById('opt-'+k);
+        el.textContent = k + ')  ' + s.secenekler[k];
+        el.className = 'quiz-opt';
+      });
+    } else {
+      document.getElementById('quiz-secenekler').style.display = 'none';
+      document.getElementById('quiz-bosluk').style.display = 'block';
+      const inp = document.getElementById('quiz-bosluk-input');
+      inp.value = ''; inp.style.borderColor = '#3d4166'; inp.focus();
+    }
+  }
+
+  function secenekSec(harf) {
+    if (quizCevaplandi) return;
+    quizSecilen = harf;
+    ['A','B','C','D'].forEach(k => {
+      const el = document.getElementById('opt-'+k);
+      el.className = 'quiz-opt' + (k===harf ? ' secili' : '');
+    });
+  }
+
+  function quizCevapla() {
+    if (quizCevaplandi) return;
+    const s = quizSorular[quizIndex];
+    let dogru = false;
+
+    if (s.tip === 'coktan') {
+      if (!quizSecilen) return;
+      dogru = (quizSecilen === s.dogru);
+      ['A','B','C','D'].forEach(k => {
+        const el = document.getElementById('opt-'+k);
+        if (k === s.dogru) el.classList.add('dogru');
+        else if (k === quizSecilen && !dogru) el.classList.add('yanlis');
+      });
+    } else {
+      const inp = document.getElementById('quiz-bosluk-input');
+      const cevap = inp.value.trim().toLowerCase().replace(/ğ/g,'g').replace(/ü/g,'u').replace(/ş/g,'s').replace(/ı/g,'i').replace(/ö/g,'o').replace(/ç/g,'c');
+      const dogruN = s.dogru.toLowerCase().replace(/ğ/g,'g').replace(/ü/g,'u').replace(/ş/g,'s').replace(/ı/g,'i').replace(/ö/g,'o').replace(/ç/g,'c');
+      dogru = cevap === dogruN;
+      inp.style.borderColor = dogru ? '#22c55e' : '#ef4444';
+    }
+
+    quizCevaplandi = true;
+    if (dogru) { quizPuan++; quizDogru.push(quizIndex); }
+    else quizYanlis.push(quizIndex);
+
+    const fb = document.getElementById('quiz-feedback');
+    fb.style.display = 'block';
+    fb.style.background = dogru ? '#052e16' : '#2d0a0a';
+    fb.style.color = dogru ? '#86efac' : '#fca5a5';
+    fb.style.border = `1px solid ${dogru ? '#22c55e' : '#ef4444'}`;
+    fb.innerHTML = (dogru ? '✅ Doğru! ' : `❌ Yanlış. Doğru cevap: <strong>${s.tip==='coktan' ? s.dogru+') '+s.secenekler[s.dogru] : s.dogru}</strong><br>`) + `<span style="opacity:0.85">${s.aciklama}</span>`;
+
+    document.getElementById('quiz-cevapla-btn').style.display = 'none';
+    document.getElementById('quiz-sonraki-btn').style.display = 'inline-flex';
+    document.getElementById('quiz-sonraki-btn').textContent =
+      quizIndex + 1 < quizSorular.length ? 'Sonraki Soru →' : 'Sonuçları Gör →';
+  }
+
+  function quizSonraki() {
+    quizIndex++;
+    quizSoruGoster();
+  }
+
+  function quizBitir() {
+    if (quizTimerInterval) clearInterval(quizTimerInterval);
+    document.getElementById('quiz-alan').style.display = 'none';
+    document.getElementById('quiz-sonuc').style.display = 'block';
+
+    const toplam = quizSorular.length;
+    const pct = Math.round((quizPuan/toplam)*100);
+    const emoji = pct===100?'🏆': pct>=80?'🎉': pct>=60?'👍': pct>=40?'📚':'💪';
+    const baslik = pct===100?'Mükemmel!': pct>=80?'Harika!': pct>=60?'İyi İş!': pct>=40?'Biraz Daha Çalış': 'Tekrar Çalış';
+
+    document.getElementById('quiz-sonuc-emoji').textContent = emoji;
+    document.getElementById('quiz-sonuc-baslik').textContent = baslik;
+    document.getElementById('quiz-sonuc-puan').textContent = `${quizPuan} / ${toplam}`;
+    document.getElementById('quiz-sonuc-mesaj').textContent = `Başarı oranın: %${pct}`;
+    document.getElementById('quiz-progress-bar').style.width = '100%';
+
+    let detay = `<div style="color:#94a3b8;font-weight:600;margin-bottom:6px;">Yanlış Yaptıkların:</div>`;
+    if (quizYanlis.length === 0) {
+      detay += '<div style="color:#86efac;">Hiç yanlışın yok! 🎯</div>';
+    } else {
+      quizYanlis.forEach(i => {
+        const s = quizSorular[i];
+        detay += `<div style="color:#fca5a5;margin-bottom:4px;">• ${s.konu}: "${s.soru.substring(0,60)}..."</div>`;
+      });
+    }
+    document.getElementById('quiz-sonuc-detay').innerHTML = detay;
+    istatGuncelle('quiz_bitti', pct);
+  }
+
+  function quizTekrar() {
+    document.getElementById('quiz-sonuc').style.display = 'none';
+    document.getElementById('quiz-baslik').style.display = 'block';
+  }
+
+  function cozumGosterS6Perf() {
+    const rows = simQ6(S6_DATA[getDigit()]);
+    const p = perfQ6(rows);
+    [['s6p_ortKuyruk',p.ortKuyruk],['s6p_ortSistem',p.ortSistem],
+     ['s6p_maxKuyruk',p.maxKuyruk],['s6p_kuyrukMusteri',p.kuyrukMusteri]]
+    .forEach(([id,v]) => setCell(id,v));
+    const box=document.getElementById('s6-perf-score');
+    box.innerHTML='<div style="color:#a78bfa;font-weight:600;">👁 Cevaplar gösterildi.</div>';
+    box.classList.add('show');
+  }
+
+  // ══════════════════════════════════════════════
+  // ADIM ADIM MOD — SORU 5
+  // ══════════════════════════════════════════════
+  let s5Mod = 'serbest', s5AdimSatir = 1;
+
+  const S5_ALANLAR = {
+    1: ['ss','sb','bt','kb','sk'],
+    2: ['va','vz','ss','sb','bt','kb','sk'],
+    3: ['va','vz','ss','sb','bt','kb','sk'],
+    4: ['va','vz','ss','sb','bt','kb','sk'],
+    5: ['va','vz','ss','sb','bt','kb','sk'],
+    6: ['va','vz','ss','sb','bt','kb','sk'],
+  };
+
+  function s5ModDegistir(mod) {
+    s5Mod = mod;
+    document.getElementById('s5-mod-serbest').className = 'mod-btn' + (mod==='serbest'?' aktif':'');
+    document.getElementById('s5-mod-adim').className   = 'mod-btn' + (mod==='adim'?' aktif':'');
+    sifirlaS5();
+    document.getElementById('s5-adim-hint').classList.remove('show');
+    document.getElementById('s5-adim-buton').classList.remove('show');
+
+    if (mod === 'adim') {
+      s5AdimSatir = 1;
+      for (let i=1; i<=6; i++) s5SatirKilitle(i, i !== 1);
+      s5SatirVurgula(1);
+      document.getElementById('s5-adim-buton').classList.add('show');
+      s5AdimHintGoster(1);
+      document.getElementById('s5-adim-ilerleme').textContent = 'Müşteri 1 / 6';
+    } else {
+      for (let i=1; i<=6; i++) s5SatirKilitle(i, false);
+      for (let i=1; i<=6; i++) {
+        const tr = document.querySelector(`#s5-tablo tbody tr:nth-child(${i})`);
+        if (tr) { tr.classList.remove('satir-aktif','satir-tamam'); }
+      }
+    }
+  }
+
+  function s5SatirKilitle(n, kilitle) {
+    const tr = document.querySelector(`#s5-tablo tbody tr:nth-child(${n})`);
+    if (!tr) return;
+    if (kilitle) tr.classList.add('satir-locked');
+    else tr.classList.remove('satir-locked');
+  }
+
+  function s5SatirVurgula(n) {
+    for (let i=1; i<=6; i++) {
+      const tr = document.querySelector(`#s5-tablo tbody tr:nth-child(${i})`);
+      if (!tr) continue;
+      tr.classList.remove('satir-aktif');
+    }
+    const tr = document.querySelector(`#s5-tablo tbody tr:nth-child(${n})`);
+    if (tr) tr.classList.add('satir-aktif');
+  }
+
+  function s5AdimHintGoster(n) {
+    const d = S5_DATA[getDigit()];
+    const rows = simQ5(d);
+    const r = rows[n-1];
+    const hint = document.getElementById('s5-adim-hint');
+
+    const rsS = String(d.rsServis[n-1]).padStart(2,'0');
+    const rsV = n>1 ? String(d.rsVaris[n-1]).padStart(2,'0') : null;
+    const prevBt = n>1 ? rows[n-2].bt : 0;
+
+    let metin = `<strong style="color:#fbbf24">Müşteri ${n} için doldur:</strong><br>`;
+    if (n > 1) metin += `• <b>Varışlar Arası Süre:</b> RS = ${rsV} → Tabloya bak (00-19=1, 20-59=2, 60-89=3, 90-99=4 dk)<br>`;
+    metin += `• <b>Servis Süresi:</b> RS = ${rsS} → Tabloya bak (00-29=2, 30-79=3, 80-99=4 dk)<br>`;
+    if (n > 1) metin += `• <b>Varış Zamanı:</b> Önceki varış + Varışlar arası süre<br>`;
+    metin += `• <b>Servis Başlangıç:</b> max(Varış Zamanı, <span style="color:#a78bfa">${prevBt}</span>) ← önceki bitiş<br>`;
+    metin += `• <b>Servis Bitiş:</b> Servis Başlangıç + Servis Süresi<br>`;
+    metin += `• <b>Kuyruk Bekleme:</b> Servis Başlangıç − Varış Zamanı<br>`;
+    metin += `• <b>Sistemde Kalma:</b> Servis Bitiş − Varış Zamanı`;
+    hint.innerHTML = metin;
+    hint.classList.add('show');
+    document.getElementById('s5-adim-ilerleme').textContent = `Müşteri ${n} / 6`;
+  }
+
+  function s5AdimKontrol() {
+    if (s5Mod !== 'adim') return;
+    const rows = simQ5(S5_DATA[getDigit()]);
+    const n = s5AdimSatir;
+    const r = rows[n-1];
+    const alanlar = S5_ALANLAR[n];
+    const dogru = { va:r.varisArasi, vz:r.varısZamani, ss:r.ss, sb:r.sb, bt:r.bt, kb:r.kb, sk:r.sk };
+
+    let hatalar = [];
+    let tamam = true;
+    alanlar.forEach(k => {
+      const el = document.getElementById(`s5_${n}_${k}`);
+      if (!el) return;
+      const val = el.value === '' ? null : parseFloat(el.value);
+      el.classList.remove('correct-cell','wrong-cell');
+      if (val === null || Math.abs(val - dogru[k]) > 0.01) {
+        el.classList.add('wrong-cell');
+        tamam = false;
+        hatalar.push(k);
+      } else {
+        el.classList.add('correct-cell');
+      }
+    });
+
+    const hint = document.getElementById('s5-adim-hint');
+    if (!tamam) {
+      // Akıllı ipucu
+      const d = S5_DATA[getDigit()]; const r2 = rows[n-1];
+      const prevBt = n>1 ? rows[n-2].bt : 0;
+      let ipucu = `<strong style="color:#ef4444">❌ Bazı hücreler yanlış. İpucu:</strong><br>`;
+      if (hatalar.includes('va')) ipucu += `• <b>Varışlar Arası:</b> RS=${String(d.rsVaris[n-1]).padStart(2,'0')} → Dağılım tablosuna bak<br>`;
+      if (hatalar.includes('vz')) ipucu += `• <b>Varış Zamanı:</b> ${rows[n-2]?.varısZamani ?? 0} + Varışlar arası süre = ?<br>`;
+      if (hatalar.includes('ss')) ipucu += `• <b>Servis Süresi:</b> RS=${String(d.rsServis[n-1]).padStart(2,'0')} → Dağılım tablosuna bak<br>`;
+      if (hatalar.includes('sb')) ipucu += `• <b>Servis Başlangıç:</b> max(${r2.varısZamani}, ${prevBt}) = ${r2.sb}<br>`;
+      if (hatalar.includes('bt')) ipucu += `• <b>Bitiş:</b> ${r2.sb} + ${r2.ss} = ${r2.bt}<br>`;
+      if (hatalar.includes('kb')) ipucu += `• <b>Kuyruk:</b> ${r2.sb} − ${r2.varısZamani} = ${r2.kb}<br>`;
+      if (hatalar.includes('sk')) ipucu += `• <b>Sistemde:</b> ${r2.bt} − ${r2.varısZamani} = ${r2.sk}`;
+      hint.innerHTML = ipucu;
+      hint.style.borderLeftColor = '#ef4444';
+      hint.style.background = '#2d0a0a';
+      hint.style.color = '#fca5a5';
+      return;
+    }
+
+    // Satır tamam
+    const tr = document.querySelector(`#s5-tablo tbody tr:nth-child(${n})`);
+    if (tr) { tr.classList.remove('satir-aktif'); tr.classList.add('satir-tamam'); }
+
+    if (n < 6) {
+      s5AdimSatir++;
+      s5SatirKilitle(s5AdimSatir, false);
+      s5SatirVurgula(s5AdimSatir);
+      hint.style.borderLeftColor = '#eab308';
+      hint.style.background = '#1c1400';
+      hint.style.color = '#fde047';
+      s5AdimHintGoster(s5AdimSatir);
+    } else {
+      hint.innerHTML = '🎉 <strong>Tablo tamamlandı!</strong> Şimdi Performans Ölçütlerini hesapla!';
+      hint.style.borderLeftColor = '#22c55e';
+      hint.style.background = '#052e16';
+      hint.style.color = '#86efac';
+      document.getElementById('s5-adim-buton').classList.remove('show');
+    }
+  }
+
+  // ══════════════════════════════════════════════
+  // ADIM ADIM MOD — SORU 6
+  // ══════════════════════════════════════════════
+  let s6Mod = 'serbest', s6AdimSatir = 1;
+  const S6_ALANLAR_LIST = ['ss','sb','bt','kb','sk'];
+
+  function s6ModDegistir(mod) {
+    s6Mod = mod;
+    document.getElementById('s6-mod-serbest').className = 'mod-btn' + (mod==='serbest'?' aktif':'');
+    document.getElementById('s6-mod-adim').className   = 'mod-btn' + (mod==='adim'?' aktif':'');
+    sifirlaS6();
+    document.getElementById('s6-adim-hint').classList.remove('show');
+    document.getElementById('s6-adim-buton').classList.remove('show');
+
+    if (mod === 'adim') {
+      s6AdimSatir = 1;
+      for (let i=1; i<=6; i++) s6SatirKilitle(i, i !== 1);
+      s6SatirVurgula(1);
+      document.getElementById('s6-adim-buton').classList.add('show');
+      s6AdimHintGoster(1);
+      document.getElementById('s6-adim-ilerleme').textContent = 'Müşteri 1 / 6';
+    } else {
+      for (let i=1; i<=6; i++) s6SatirKilitle(i, false);
+      for (let i=1; i<=6; i++) {
+        const tr = document.querySelector(`#page-s6 .itablo tbody tr:nth-child(${i})`);
+        if (tr) tr.classList.remove('satir-aktif','satir-tamam');
+      }
+    }
+  }
+
+  function s6SatirKilitle(n, kilitle) {
+    const tr = document.querySelector(`#page-s6 .itablo tbody tr:nth-child(${n})`);
+    if (!tr) return;
+    if (kilitle) tr.classList.add('satir-locked');
+    else tr.classList.remove('satir-locked');
+  }
+
+  function s6SatirVurgula(n) {
+    for (let i=1; i<=6; i++) {
+      const tr = document.querySelector(`#page-s6 .itablo tbody tr:nth-child(${i})`);
+      if (tr) tr.classList.remove('satir-aktif');
+    }
+    const tr = document.querySelector(`#page-s6 .itablo tbody tr:nth-child(${n})`);
+    if (tr) tr.classList.add('satir-aktif');
+  }
+
+  function s6AdimHintGoster(n) {
+    const d = S6_DATA[getDigit()];
+    const rows = simQ6(d);
+    const rsS = String(d.rsServis[n-1]).padStart(2,'0');
+    const rsV = n>1 ? String(d.rsVaris[n-1]).padStart(2,'0') : null;
+    const vz = rows[n-1].varısZamani;
+    // İki sunucunun mevcut durumunu hesapla
+    let v1=0, v2=0;
+    for (let i=0;i<n-1;i++) { if(v1<=v2) v1=rows[i].bt; else v2=rows[i].bt; }
+    const minV = Math.min(v1,v2);
+
+    const hint = document.getElementById('s6-adim-hint');
+    let metin = `<strong style="color:#fbbf24">Müşteri ${n} — Varış t=${vz}</strong><br>`;
+    metin += `• <b>Servis Süresi:</b> RS=${rsS} → (00-39=2, 40-79=3, 80-99=4 dk)<br>`;
+    metin += `• <b>Vezne durumu:</b> V1 bitiş=${v1}, V2 bitiş=${v2}<br>`;
+    if (vz >= minV) metin += `• Müşteri geldiğinde en az bir vezne boş → <b>Hemen servise giriyor</b><br>`;
+    else metin += `• Her iki vezne dolu → <b>Kuyrukta bekliyor!</b> Servis Başlangıç = ${minV}<br>`;
+    metin += `• <b>Servis Başlangıç:</b> max(${vz}, ${minV})<br>`;
+    metin += `• <b>Servis Bitiş:</b> Başlangıç + Servis Süresi<br>`;
+    metin += `• <b>Kuyruk:</b> Başlangıç − ${vz} &nbsp; | &nbsp; <b>Sistemde:</b> Bitiş − ${vz}`;
+    hint.innerHTML = metin;
+    hint.style.borderLeftColor = '#eab308';
+    hint.style.background = '#1c1400';
+    hint.style.color = '#fde047';
+    hint.classList.add('show');
+    document.getElementById('s6-adim-ilerleme').textContent = `Müşteri ${n} / 6`;
+  }
+
+  function s6AdimKontrol() {
+    if (s6Mod !== 'adim') return;
+    const rows = simQ6(S6_DATA[getDigit()]);
+    const n = s6AdimSatir;
+    const r = rows[n-1];
+
+    let hatalar = [], tamam = true;
+    S6_ALANLAR_LIST.forEach(k => {
+      const el = document.getElementById(`s6_${n}_${k}`);
+      if (!el) return;
+      const val = el.value==='' ? null : parseFloat(el.value);
+      el.classList.remove('correct-cell','wrong-cell');
+      const dogru = {ss:r.ss, sb:r.sb, bt:r.bt, kb:r.kb, sk:r.sk}[k];
+      if (val===null || Math.abs(val-dogru)>0.01) { el.classList.add('wrong-cell'); tamam=false; hatalar.push(k); }
+      else el.classList.add('correct-cell');
+    });
+
+    const hint = document.getElementById('s6-adim-hint');
+    if (!tamam) {
+      let ipucu = `<strong style="color:#ef4444">❌ Yanlış hücre var. İpucu:</strong><br>`;
+      if (hatalar.includes('ss')) ipucu += `• <b>Servis Süresi:</b> RS=${String(S6_DATA[getDigit()].rsServis[n-1]).padStart(2,'0')} → dağılım tablosuna bak<br>`;
+      if (hatalar.includes('sb')) ipucu += `• <b>Servis Başlangıç:</b> max(Varış=${r.varısZamani}, min vezne bitiş) = ${r.sb}<br>`;
+      if (hatalar.includes('bt')) ipucu += `• <b>Bitiş:</b> ${r.sb} + ${r.ss} = ${r.bt}<br>`;
+      if (hatalar.includes('kb')) ipucu += `• <b>Kuyruk:</b> ${r.sb} − ${r.varısZamani} = ${r.kb}<br>`;
+      if (hatalar.includes('sk')) ipucu += `• <b>Sistemde:</b> ${r.bt} − ${r.varısZamani} = ${r.sk}`;
+      hint.innerHTML = ipucu;
+      hint.style.borderLeftColor = '#ef4444';
+      hint.style.background = '#2d0a0a';
+      hint.style.color = '#fca5a5';
+      return;
+    }
+
+    const tr = document.querySelector(`#page-s6 .itablo tbody tr:nth-child(${n})`);
+    if (tr) { tr.classList.remove('satir-aktif'); tr.classList.add('satir-tamam'); }
+
+    if (n < 6) {
+      s6AdimSatir++;
+      s6SatirKilitle(s6AdimSatir, false);
+      s6SatirVurgula(s6AdimSatir);
+      s6AdimHintGoster(s6AdimSatir);
+    } else {
+      hint.innerHTML = '🎉 <strong>Tablo tamamlandı!</strong> Şimdi Performans Ölçütlerini hesapla!';
+      hint.style.borderLeftColor = '#22c55e';
+      hint.style.background = '#052e16';
+      hint.style.color = '#86efac';
+      document.getElementById('s6-adim-buton').classList.remove('show');
+    }
+  }
+</script>
+
+</body>
+</html>
